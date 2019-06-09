@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { LocalStorage } from 'quasar'
 import { mapGetters } from 'vuex'
 import LoginForm from 'components/login-form'
 
@@ -15,14 +16,26 @@ export default {
     LoginForm
   },
   watch: {
-    loggedIn () {
-      console.log(this.loggedIn)
-    }
   },
   computed: {
     ...mapGetters('auth', [
       'loggedIn'
     ])
+  },
+  beforeCreate () {
+    this.$store.dispatch('initState')
+    this.$store.subscribe((mutation, state) => {
+      if (mutation.type.indexOf('route/') === 0) {
+        console.log('not saved')
+        return // eslint-disable-line
+      }
+      const saveState = {
+        auth: state.auth
+      }
+      if (LocalStorage && LocalStorage.set) {
+        LocalStorage.set('state', saveState)
+      }
+    })
   }
 }
 </script>

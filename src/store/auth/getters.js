@@ -1,1 +1,1 @@
-export const loggedIn = (state) => (state.token != null && state.name != null)
+export const loggedIn = (state) => (state.credentials != null && state.credentials.token != null && state.credentials.name != null)

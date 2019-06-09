@@ -1,6 +1,8 @@
 export default {
-  token: null,
-  name: null,
-  lang: 'en',
-  role: null
+  credentials: {
+    token: null,
+    name: null,
+    lang: 'en',
+    role: null
+  }
 }

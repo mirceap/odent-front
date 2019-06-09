@@ -8,7 +8,17 @@
 </style>
 
 <script>
+import CurrentUserMixin from '../../mixins/current-user'
+
 export default {
-  name: 'Settings'
+  name: 'Settings',
+  mixins: [
+    CurrentUserMixin
+  ],
+  mounted () {
+    if (!this.currentUser.canSee[this.$route.name]) {
+      this.$router.push({ name: 'dashboard' })
+    }
+  }
 }
 </script>

@@ -18,7 +18,7 @@
       </q-card-section>
       <q-card-section>
         <q-btn
-          :label="$t('auth.log_in_pacient')" @click="mockupLogin('pacient')" class="margins" color="white" text-color="black"></q-btn>
+          :label="$t('auth.log_in_pacient')" @click="mockupLogin('patient')" class="margins" color="white" text-color="black"></q-btn>
       </q-card-section>
     </q-card>
   </div>

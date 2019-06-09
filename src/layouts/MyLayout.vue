@@ -46,49 +46,49 @@
       content-class="bg-grey-2"
     >
       <q-list>
-        <q-item clickable :to="{ name: 'dashboard' }">
+        <q-item clickable :to="{ name: 'dashboard' }" v-if="currentUser.canSee.dashboard">
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="dashboard"></q-icon>
           </q-item-section>
           <q-item-section>
             <q-item-label>{{$t('menu.dashboard')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable :to="{ name: 'appointments' }">
+        <q-item clickable :to="{ name: 'appointments' }" v-if="currentUser.canSee.appointments">
           <q-item-section avatar>
-            <q-icon name="calendar_today" />
+            <q-icon name="calendar_today"></q-icon>
           </q-item-section>
           <q-item-section>
             <q-item-label>{{$t('menu.appointments')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable :to="{ name: 'patients' }">
+        <q-item clickable :to="{ name: 'patients' }" v-if="currentUser.canSee.patients">
           <q-item-section avatar>
-            <q-icon name="people" />
+            <q-icon name="people"></q-icon>
           </q-item-section>
           <q-item-section>
             <q-item-label>{{$t('menu.patients')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable :to="{ name: 'employees' }">
+        <q-item clickable :to="{ name: 'employees' }" v-if="currentUser.canSee.employees">
           <q-item-section avatar>
-            <q-icon name="supervised_user_circle" />
+            <q-icon name="supervised_user_circle"></q-icon>
           </q-item-section>
           <q-item-section>
             <q-item-label>{{$t('menu.employees')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable :to="{ name: 'treatments' }">
+        <q-item clickable :to="{ name: 'treatments' }" v-if="currentUser.canSee.treatments">
           <q-item-section avatar>
-            <q-icon name="healing" />
+            <q-icon name="healing"></q-icon>
           </q-item-section>
           <q-item-section>
             <q-item-label>{{$t('menu.treatments')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable :to="{ name: 'settings' }">
+        <q-item clickable :to="{ name: 'settings' }" v-if="currentUser.canSee.settings">
           <q-item-section avatar>
-            <q-icon name="settings" />
+            <q-icon name="settings"></q-icon>
           </q-item-section>
           <q-item-section>
             <q-item-label>{{$t('menu.settings')}}</q-item-label>
@@ -98,23 +98,26 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view></router-view>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import { openURL } from 'quasar'
 import { mapMutations } from 'vuex'
+import currentUserMixin from '../mixins/current-user'
+
 export default {
   name: 'MyLayout',
+  mixins: [
+    currentUserMixin
+  ],
   data () {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
   },
   methods: {
-    openURL,
     ...mapMutations('auth', [
       'CLEAR_CREDENTIALS'
     ])

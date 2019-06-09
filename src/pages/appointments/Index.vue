@@ -10,6 +10,7 @@
 <script>
 import { Kalendar } from 'kalendar-vue'
 import 'kalendar-vue/dist/KalendarVue.css'
+import CurrentUserMixin from '../../mixins/current-user'
 
 export default {
   name: 'PageIndex',
@@ -28,6 +29,14 @@ export default {
         current_day: new Date(), // Valid date
         military_time: true // Boolean
       }
+    }
+  },
+  mixins: [
+    CurrentUserMixin
+  ],
+  mounted () {
+    if (!this.currentUser.canSee[this.$route.name]) {
+      this.$router.push({ name: 'dashboard' })
     }
   }
 }

@@ -1,11 +1,15 @@
 export const SET_MOCKUP = (state, role) => {
-  state.role = role
-  state.token = 'fake'
-  state.name = role
+  state.credentials = {
+    role: role,
+    token: 'fake',
+    name: role
+  }
 }
 
 export const CLEAR_CREDENTIALS = (state) => {
-  state.token = null
-  state.name = null
-  state.role = null
+  state.credentials = {
+    role: null,
+    token: null,
+    name: null
+  }
 }

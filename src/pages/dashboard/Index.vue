@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    Employees
+    Dashboard
   </q-page>
 </template>
 
@@ -8,7 +8,17 @@
 </style>
 
 <script>
+import CurrentUserMixin from '../../mixins/current-user'
+
 export default {
-  name: 'PageIndex'
+  name: 'PageIndex',
+  mixins: [
+    CurrentUserMixin
+  ],
+  mounted () {
+    if (!this.currentUser.canSee[this.$route.name]) {
+      this.$router.push({ name: 'dashboard' })
+    }
+  }
 }
 </script>

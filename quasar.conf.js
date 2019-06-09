@@ -38,7 +38,13 @@ module.exports = function (ctx) {
         'QList',
         'QItem',
         'QItemSection',
-        'QItemLabel'
+        'QItemLabel',
+        'QDialog',
+        'QCard',
+        'QCardSection',
+        'QCardActions',
+        'QBtnDropdown',
+        'QAvatar'
       ],
 
       directives: [

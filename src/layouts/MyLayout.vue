@@ -13,10 +13,30 @@
         </q-btn>
 
         <q-toolbar-title>
-          Quasar App
+          <q-btn flat :to="{ name: 'home' }">
+            Odent App
+          </q-btn>
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn-dropdown
+            color="white"
+            dense
+            text-color="black"
+            icon="people"
+          >
+            <q-list>
+              <q-item clickable @click="CLEAR_CREDENTIALS">
+                <q-item-section avatar>
+                  <q-avatar icon="exit_to_app" color="white" text-color="black" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{$t('auth.log_out')}}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -26,50 +46,52 @@
       content-class="bg-grey-2"
     >
       <q-list>
-        <q-item-label header>Essential Links</q-item-label>
-        <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
+        <q-item clickable :to="{ name: 'dashboard' }">
           <q-item-section avatar>
-            <q-icon name="school" />
+            <q-icon name="dashboard" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Docs</q-item-label>
-            <q-item-label caption>quasar.dev</q-item-label>
+            <q-item-label>{{$t('menu.dashboard')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://github.com/quasarframework/">
+        <q-item clickable :to="{ name: 'appointments' }">
           <q-item-section avatar>
-            <q-icon name="code" />
+            <q-icon name="calendar_today" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Github</q-item-label>
-            <q-item-label caption>github.com/quasarframework</q-item-label>
+            <q-item-label>{{$t('menu.appointments')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
+        <q-item clickable :to="{ name: 'patients' }">
           <q-item-section avatar>
-            <q-icon name="chat" />
+            <q-icon name="people" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Discord Chat Channel</q-item-label>
-            <q-item-label caption>chat.quasar.dev</q-item-label>
+            <q-item-label>{{$t('menu.patients')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
+        <q-item clickable :to="{ name: 'employees' }">
           <q-item-section avatar>
-            <q-icon name="record_voice_over" />
+            <q-icon name="supervised_user_circle" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Forum</q-item-label>
-            <q-item-label caption>forum.quasar.dev</q-item-label>
+            <q-item-label>{{$t('menu.employees')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://twitter.com/quasarframework">
+        <q-item clickable :to="{ name: 'treatments' }">
           <q-item-section avatar>
-            <q-icon name="rss_feed" />
+            <q-icon name="healing" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Twitter</q-item-label>
-            <q-item-label caption>@quasarframework</q-item-label>
+            <q-item-label>{{$t('menu.treatments')}}</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable :to="{ name: 'settings' }">
+          <q-item-section avatar>
+            <q-icon name="settings" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{$t('menu.settings')}}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -83,7 +105,7 @@
 
 <script>
 import { openURL } from 'quasar'
-
+import { mapMutations } from 'vuex'
 export default {
   name: 'MyLayout',
   data () {
@@ -92,7 +114,10 @@ export default {
     }
   },
   methods: {
-    openURL
+    openURL,
+    ...mapMutations('auth', [
+      'CLEAR_CREDENTIALS'
+    ])
   }
 }
 </script>

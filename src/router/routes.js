@@ -9,32 +9,32 @@ const routes = [
       {
         path: '/dashboard',
         name: 'dashboard',
-        component: () => import('pages/dashboard/index')
+        component: () => import('pages/dashboard/Index.vue')
       },
       {
         path: '/appointments',
         name: 'appointments',
-        component: () => import('pages/appointments/index')
+        component: () => import('pages/appointments/Index.vue')
       },
       {
         path: '/patients',
         name: 'patients',
-        component: () => import('pages/patients/index')
+        component: () => import('pages/patients/Index.vue')
       },
       {
         path: '/employees',
         name: 'employees',
-        component: () => import('pages/employees/index')
+        component: () => import('pages/employees/Index.vue')
       },
       {
         path: '/treatments',
         name: 'treatments',
-        component: () => import('pages/treatments/index')
+        component: () => import('pages/treatments/Index.vue')
       },
       {
         path: '/settings',
         name: 'settings',
-        component: () => import('pages/settings/index')
+        component: () => import('pages/settings/Index.vue')
       }
     ]
   }

@@ -26,7 +26,6 @@ export default {
     this.$store.dispatch('initState')
     this.$store.subscribe((mutation, state) => {
       if (mutation.type.indexOf('route/') === 0) {
-        console.log('not saved')
         return // eslint-disable-line
       }
       const saveState = {

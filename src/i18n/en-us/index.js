@@ -19,5 +19,14 @@ export default {
     employees: 'Employees',
     treatments: 'Treatments',
     settings: 'Settings'
+  },
+  http: {
+    an_unknown_error_occured: 'An unknown error occured.',
+    cancel: 'Cancel',
+    connection_problem: 'Connection problem.',
+    connection_problem_retry: 'Connection problem - re-trying in {sec} seconds.',
+    cannot_connect_to_server: 'Cannot connect to server.',
+    request_cancelled: 'Request cancelled.',
+    retry: 'Retry'
   }
 }

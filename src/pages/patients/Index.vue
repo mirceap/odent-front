@@ -8,6 +8,7 @@
 </style>
 
 <script>
+import { mapActions } from 'vuex'
 import CurrentUserMixin from '../../mixins/current-user'
 
 export default {
@@ -15,10 +16,16 @@ export default {
   mixins: [
     CurrentUserMixin
   ],
+  methods: {
+    ...mapActions('patients', [
+      'fetch'
+    ])
+  },
   mounted () {
     if (!this.currentUser.canSee[this.$route.name]) {
       this.$router.push({ name: 'dashboard' })
     }
+    this.fetch()
   }
 }
 </script>

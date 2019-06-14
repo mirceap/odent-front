@@ -13,7 +13,7 @@
         </q-btn>
 
         <q-toolbar-title>
-          <q-btn flat :to="{ name: 'home' }">
+          <q-btn flat :to="{ path: '/' }">
             Odent App
           </q-btn>
         </q-toolbar-title>

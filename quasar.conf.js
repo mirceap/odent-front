@@ -1,14 +1,18 @@
 // Configuration for your app
 
 module.exports = function (ctx) {
+  const env = {
+    API: JSON.stringify(process.env.API || 'http://localhost:8080')
+  }
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
       'i18n',
-      'axios'
+      'http',
+      'vuelidate',
+      'vuex-router-sync'
     ],
-
     css: [
       'app.styl'
     ],
@@ -64,6 +68,7 @@ module.exports = function (ctx) {
     supportIE: true,
 
     build: {
+      env,
       scopeHoisting: true,
       // vueRouterMode: 'history',
       // vueCompiler: true,
@@ -82,7 +87,7 @@ module.exports = function (ctx) {
 
     devServer: {
       // https: true,
-      // port: 8080,
+      port: 9999,
       open: true // opens browser window automatically
     },
 

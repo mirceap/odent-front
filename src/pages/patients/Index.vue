@@ -12,7 +12,7 @@ import { mapActions } from 'vuex'
 import CurrentUserMixin from '../../mixins/current-user'
 
 export default {
-  name: 'PageIndex',
+  name: 'PatientsIndex',
   mixins: [
     CurrentUserMixin
   ],

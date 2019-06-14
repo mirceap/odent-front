@@ -11,7 +11,7 @@
 import CurrentUserMixin from '../../mixins/current-user'
 
 export default {
-  name: 'Settings',
+  name: 'SettingsIndex',
   mixins: [
     CurrentUserMixin
   ],

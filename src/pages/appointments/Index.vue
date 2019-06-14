@@ -8,12 +8,13 @@
 </style>
 
 <script>
+import { mapActions } from 'vuex'
 import { Kalendar } from 'kalendar-vue'
 import 'kalendar-vue/dist/KalendarVue.css'
 import CurrentUserMixin from '../../mixins/current-user'
 
 export default {
-  name: 'PageIndex',
+  name: 'AppointmentsIndex',
   components: {
     Kalendar
   },
@@ -34,10 +35,16 @@ export default {
   mixins: [
     CurrentUserMixin
   ],
+  methods: {
+    ...mapActions('appointments', [
+      'fetch'
+    ])
+  },
   mounted () {
     if (!this.currentUser.canSee[this.$route.name]) {
       this.$router.push({ name: 'dashboard' })
     }
+    this.fetch()
   }
 }
 </script>

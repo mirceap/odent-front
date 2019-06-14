@@ -2,7 +2,6 @@ import { http } from '../../boot/http'
 
 export const fetch = ({ commit, state }) => {
   commit('SET_LOADING', true)
-  console.log(http.defaults)
   return http
     .get('employees')
     .then((response) => {

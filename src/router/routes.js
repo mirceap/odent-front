@@ -30,12 +30,12 @@ const routes = [
         path: '/treatments',
         name: 'treatments',
         component: () => import('pages/treatments/Index.vue')
-      },
-      {
-        path: '/settings',
-        name: 'settings',
-        component: () => import('pages/settings/Index.vue')
       }
+      // {
+      //   path: '/settings',
+      //   name: 'settings',
+      //   component: () => import('pages/settings/Index.vue')
+      // }
     ]
   }
 ]

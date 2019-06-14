@@ -86,14 +86,14 @@
             <q-item-label>{{$t('menu.treatments')}}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable :to="{ name: 'settings' }" v-if="currentUser.canSee.settings">
-          <q-item-section avatar>
-            <q-icon name="settings"></q-icon>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{$t('menu.settings')}}</q-item-label>
-          </q-item-section>
-        </q-item>
+<!--        <q-item clickable :to="{ name: 'settings' }" v-if="currentUser.canSee.settings">-->
+<!--          <q-item-section avatar>-->
+<!--            <q-icon name="settings"></q-icon>-->
+<!--          </q-item-section>-->
+<!--          <q-item-section>-->
+<!--            <q-item-label>{{$t('menu.settings')}}</q-item-label>-->
+<!--          </q-item-section>-->
+<!--        </q-item>-->
       </q-list>
     </q-drawer>
 

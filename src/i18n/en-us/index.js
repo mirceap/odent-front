@@ -28,5 +28,40 @@ export default {
     cannot_connect_to_server: 'Cannot connect to server.',
     request_cancelled: 'Request cancelled.',
     retry: 'Retry'
+  },
+  generic: {
+    yes: 'Yes',
+    no: 'No',
+    any: 'Any',
+    confirm: 'Confirm',
+    nothing_found: 'Nothing found',
+    back_to_list: 'Back to list',
+    back: 'Back',
+    actions: 'Actions',
+    filters: 'Filter',
+    search: 'Search',
+    reset: 'Reset',
+    add: 'Add'
+  },
+  employees: {
+    firstName: 'Firstname',
+    lastName: 'Lastname',
+    email: 'Email',
+    phoneNo: 'Phone number',
+    birthdate: 'Birthdate',
+    positionTitle: 'Position title'
+  },
+  patients: {
+    firstName: 'Firstname',
+    lastName: 'Lastname',
+    email: 'Email',
+    phoneNo: 'Phone number',
+    birthdate: 'Birthdate',
+    medicalRecord: 'Medical Record'
+  },
+  treatments: {
+    estimatedDuration: 'Estimated Duration (mins)',
+    name: 'Name',
+    price: 'Price'
   }
 }

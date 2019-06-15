@@ -36,6 +36,7 @@
 import { mapActions, mapState } from 'vuex'
 import CurrentUserMixin from '../../mixins/current-user'
 import TreatmentsItemRow from './ItemRow'
+import { showRejectionMessage } from '../../boot/http'
 
 export default {
   name: 'TreatmentsIndex',
@@ -68,6 +69,42 @@ export default {
       'fetch',
       'getItem'
     ]),
+    doDeleteConfirm (id) {
+      const resolverPromise = new Promise((resolve, reject) => {
+        this.dialogResolver = { resolve, reject }
+      })
+      return this.$q
+        .dialog({
+          title: this.$t('generic.confirm_delete_title'),
+          message: this.$t('generic.confirm_delete_message'),
+          ok: {
+            color: 'warning',
+            icon: 'delete',
+            label: this.$t('generic.confirm_delete_ok')
+          },
+          cancel: {
+            color: 'dark',
+            flat: true,
+            icon: 'undo',
+            label: this.$t('generic.confirm_delete_cancel')
+          }
+        }, resolverPromise)
+        .onOk(() => this.doDeleteAsset(id))
+        .onCancel(() => {})
+    },
+    doDeleteAsset (id) {
+      this.delete({ id })
+        .then(() => {
+          this.$q.notify({
+            type: 'positive',
+            message: this.$t('generic.delete_notifications.success'),
+            position: 'bottom-right'
+          })
+        })
+        .catch((rejection) => {
+          showRejectionMessage(rejection, 'fleet.actions.delete_notifications.fail')
+        })
+    },
     onAction (payload) {
       const action = payload && payload.action ? payload.action : 'cancel'
       switch (action) {
@@ -76,7 +113,7 @@ export default {
           break
         }
         case 'delete': {
-          this.delete(payload)
+          this.doDeleteConfirm(payload.id)
           break
         }
       }

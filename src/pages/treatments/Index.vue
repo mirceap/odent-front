@@ -14,11 +14,13 @@
       <thead>
       <tr>
         <th class="text-left">{{ $t('treatments.name') }}</th>
-        <th class="text-right">{{ $t('treatments.price') }}</th>
-        <th class="text-right">{{ $t('treatments.estimatedDuration') }}</th>
+        <th class="text-left">{{ $t('treatments.price') }}</th>
+        <th class="text-left">{{ $t('treatments.estimatedDuration') }}</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
+        <treatments-item-row v-for="item in list" :key="item.ID" :item="item" @action="onAction"></treatments-item-row>
       </tbody>
     </q-markup-table>
     <q-inner-loading :showing="loading">
@@ -33,12 +35,28 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import CurrentUserMixin from '../../mixins/current-user'
+import TreatmentsItemRow from './ItemRow'
 
 export default {
   name: 'TreatmentsIndex',
+  components: { TreatmentsItemRow },
   mixins: [
     CurrentUserMixin
   ],
+  props: {
+    idItem: [String, Number]
+  },
+  data () {
+    return {
+      usage: '',
+      currentItem: {
+        index: -1,
+        item: undefined,
+        opened: false,
+        locked: false
+      }
+    }
+  },
   computed: {
     ...mapState('treatments', [
       'list',
@@ -47,8 +65,56 @@ export default {
   },
   methods: {
     ...mapActions('treatments', [
-      'fetch'
-    ])
+      'fetch',
+      'getItem'
+    ]),
+    onAction (payload) {
+      const action = payload && payload.action ? payload.action : 'cancel'
+      switch (action) {
+        case 'edit': {
+          this.$router.push({ name: this.$route.name, params: { idItem: payload.id } })
+          break
+        }
+        case 'delete': {
+          this.delete(payload)
+          break
+        }
+      }
+    },
+    itemOpen (idItem) {
+      if (!idItem) {
+        this.usage = 'add'
+        this.currentItem = {
+          index: -1,
+          item: {},
+          opened: false,
+          locked: false,
+          actions: []
+        }
+        return
+      }
+      const id = idItem
+      this.usage = 'edit'
+      this.getItem({ id }).then(({ item }) => {
+        if (item) {
+          const actions = []
+          actions.push('cancel')
+          actions.push('update')
+          this.currentItem = {
+            index: 0,
+            item,
+            opened: true,
+            locked: false,
+            actions
+          }
+        }
+      })
+    }
+  },
+  watch: {
+    idItem () {
+      this.itemOpen(this.idItem)
+    }
   },
   mounted () {
     if (!this.currentUser.canSee[this.$route.name]) {

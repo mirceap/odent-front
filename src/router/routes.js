@@ -9,32 +9,42 @@ const routes = [
       {
         path: '/dashboard',
         name: 'dashboard',
-        component: () => import('pages/dashboard/Index.vue')
+        component: () => import('pages/dashboard/Index.vue'),
+        props: true
       },
       {
-        path: '/appointments',
+        path: '/appointments/:idItem?',
         name: 'appointments',
-        component: () => import('pages/appointments/Index.vue')
+        component: () => import('pages/appointments/Index.vue'),
+        props: true
+
       },
       {
-        path: '/patients',
+        path: '/patients/:idItem?',
         name: 'patients',
-        component: () => import('pages/patients/Index.vue')
+        component: () => import('pages/patients/Index.vue'),
+        props: true
+
       },
       {
-        path: '/employees',
+        path: '/employees/:idItem?',
         name: 'employees',
-        component: () => import('pages/employees/Index.vue')
+        component: () => import('pages/employees/Index.vue'),
+        props: true
+
       },
       {
-        path: '/treatments',
+        path: '/treatments/:idItem?',
         name: 'treatments',
-        component: () => import('pages/treatments/Index.vue')
+        component: () => import('pages/treatments/Index.vue'),
+        props: true
+
       }
       // {
-      //   path: '/settings',
+      //   path: '/settings/:idItem?',
       //   name: 'settings',
-      //   component: () => import('pages/settings/Index.vue')
+      //   component: () => import('pages/settings/Index.vue'),
+      //   props: true
       // }
     ]
   }

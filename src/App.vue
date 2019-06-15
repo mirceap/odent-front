@@ -29,7 +29,11 @@ export default {
         return // eslint-disable-line
       }
       const saveState = {
-        auth: state.auth
+        auth: state.auth,
+        patients: state.patients,
+        treatments: state.treatments,
+        employees: state.employees,
+        appointments: state.appointments
       }
       if (LocalStorage && LocalStorage.set) {
         LocalStorage.set('state', saveState)

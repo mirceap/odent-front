@@ -139,6 +139,19 @@ export default {
           break
         }
         case 'add': {
+          this.add({ item: payload.item }).then(() => {
+            this.currentItem = {
+              index: -1,
+              item: {},
+              opened: false,
+              locked: false,
+              actions: ['cancel', 'add']
+            }
+            this.$router.replace({ name: this.$route.name })
+          })
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+            })
           break
         }
         case 'update': {

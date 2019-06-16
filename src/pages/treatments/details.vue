@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog no-esc-dismiss no-backdrop-dismiss v-model="value.opened">
-      <q-layout view="Lhh lpR fff" container class="bg-white">
+      <q-layout view="Lhh lpR fff" container class="bg-white" style="max-height: 60vh">
         <q-header class="bg-black text-white">
           <q-toolbar>
           </q-toolbar>
@@ -34,14 +34,32 @@
             <form class="column" @submit.prevent>
               <div class="layout-padding">
                 <q-input
-                  v-model="item.name"
+                  v-model="item.Name"
                   color="dark"
                   required
                   autocapitalize="words"
-                  :float-label="$t('services.fields.name.label')"
-                  @input="doTouch($v.item.name)"
-                  :error="$v.item.name.$error"
-                  :error-message="$t('employees.fields.name.error')"></q-input>
+                  :label="$t('treatments.fields.name.label')"
+                  @input="doTouch($v.item.Name)"
+                  :error="$v.item.Name.$error"
+                  :error-message="$t('treatments.fields.name.error')"></q-input>
+                <q-input
+                  v-model.number="item.Price"
+                  color="dark"
+                  required
+                  type="number"
+                  :label="$t('treatments.fields.price.label')"
+                  @input="doTouch($v.item.Price)"
+                  :error="$v.item.Price.$error"
+                  :error-message="$t('treatments.fields.price.error')"></q-input>
+                <q-input
+                  v-model.number="item.EstimatedDuration"
+                  color="dark"
+                  required
+                  type="number"
+                  :label="$t('treatments.fields.estimatedDuration.label')"
+                  @input="doTouch($v.item.EstimatedDuration)"
+                  :error="$v.item.EstimatedDuration.$error"
+                  :error-message="$t('treatments.fields.estimatedDuration.error')"></q-input>
               </div>
             </form>
           </q-page>
@@ -78,7 +96,13 @@ export default {
   },
   validations: {
     item: {
-      name: {
+      Name: {
+        required
+      },
+      Price: {
+        required
+      },
+      EstimatedDuration: {
         required
       }
     }

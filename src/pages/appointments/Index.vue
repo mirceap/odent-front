@@ -38,7 +38,9 @@ export default {
   methods: {
     ...mapActions('appointments', [
       'fetch',
-      'remove'
+      'remove',
+      'add',
+      'edit'
     ])
   },
   mounted () {

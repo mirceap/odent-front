@@ -73,7 +73,9 @@ export default {
     ...mapActions('employees', [
       'fetch',
       'getItem',
-      'remove'
+      'remove',
+      'add',
+      'edit'
     ]),
     doDeleteConfirm (id) {
       const resolverPromise = new Promise((resolve, reject) => {
@@ -108,7 +110,7 @@ export default {
           })
         })
         .catch((rejection) => {
-          showRejectionMessage(rejection, 'fleet.actions.delete_notifications.fail')
+          showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
         })
     },
     openAdd () {
@@ -140,7 +142,22 @@ export default {
           break
         }
         case 'add': {
-          console.log(payload)
+          break
+        }
+        case 'update': {
+          this.edit({ item: payload.item }).then(() => {
+            this.currentItem = {
+              index: -1,
+              item: {},
+              opened: false,
+              locked: false,
+              actions: ['cancel', 'add']
+            }
+            this.$router.replace({ name: this.$route.name })
+          })
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+            })
           break
         }
         case 'cancel': {

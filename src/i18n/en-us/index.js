@@ -78,6 +78,20 @@ export default {
   treatments: {
     estimatedDuration: 'Estimated Duration (mins)',
     name: 'Name',
-    price: 'Price'
+    price: 'Price',
+    fields: {
+      estimatedDuration: {
+        label: 'Estimated Duration (mins)',
+        error: 'Please add the duration of the treatment'
+      },
+      name: {
+        label: 'Name',
+        error: 'Please add the name of the treatment'
+      },
+      price: {
+        label: 'Price',
+        error: 'Please add the price of the treatment'
+      }
+    }
   }
 }

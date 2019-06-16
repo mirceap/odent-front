@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog no-esc-dismiss no-backdrop-dismiss v-model="value.opened">
-      <q-layout view="Lhh lpR fff" container class="bg-white">
+      <q-layout view="Lhh lpR fff" container class="bg-white" style="max-height: 60vh">
         <q-header class="bg-black text-white">
           <q-toolbar>
           </q-toolbar>

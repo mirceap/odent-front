@@ -17,27 +17,52 @@ export const fetch = ({ commit, state }) => {
     })
 }
 
-export const remove = ({ dispatch }, { id }) => (
-  http.delete(`/appointments/${encodeURIComponent(id)}`)
+export const remove = ({ dispatch, commit }, { id }) => {
+  commit('SET_LOADING', true)
+  return http.delete(`/treatments/${encodeURIComponent(id)}`)
     .then(() => {
       dispatch('fetch')
-    }).catch((rejection) => Promise.reject(rejection))
-)
+    }).catch((rejection) => {
+      commit('SET_LOADING', false)
+      return Promise.reject(rejection)
+    })
+}
 
-export const getItem = (_, { id }) => http
-  .get(`/appointments/${encodeURIComponent(id)}`)
-  .then((response) => {
-    const item = clone(response.data)
-    return Promise.resolve({ item })
-  })
-  .catch((rejection) => Promise.reject(rejection))
+export const getItem = ({ commit }, { id }) => {
+  commit('SET_LOADING', true)
+  return http
+    .get(`/appointments/${encodeURIComponent(id)}`)
+    .then((response) => {
+      const item = clone(response.data)
+      commit('SET_LOADING', false)
+      return Promise.resolve({ item })
+    })
+    .catch((rejection) => {
+      commit('SET_LOADING', false)
+      return Promise.reject(rejection)
+    })
+}
 
-export const add = ({ dispatch }, { item }) => http
-  .post('/appointments', item)
-  .then((response) => {
-    return dispatch('fetch')
-  })
+export const add = ({ dispatch, commit }, { item }) => {
+  commit('SET_LOADING', true)
+  return http
+    .post('/appointments', item)
+    .then((response) => {
+      return dispatch('fetch')
+    })
+    .catch((rejection) => {
+      commit('SET_LOADING', false)
+      return Promise.reject(rejection)
+    })
+}
 
-export const edit = ({ dispatch }, { item }) => http
-  .post('/appointments', item)
-  .then(() => dispatch('fetch'))
+export const edit = ({ dispatch, commit }, { item }) => {
+  commit('SET_LOADING', true)
+  return http
+    .put(`/appointments/${encodeURIComponent(item.ID)}`, item)
+    .then(() => dispatch('fetch'))
+    .catch((rejection) => {
+      commit('SET_LOADING', false)
+      return Promise.reject(rejection)
+    })
+}

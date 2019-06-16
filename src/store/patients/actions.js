@@ -15,3 +15,10 @@ export const fetch = ({ commit, state }) => {
       return Promise.reject(rejection)
     })
 }
+
+export const remove = ({ dispatch }, { id }) => (
+  http.delete(`/patients/${encodeURIComponent(id)}`)
+    .then(() => {
+      dispatch('fetch')
+    }).catch((rejection) => Promise.reject(rejection))
+)

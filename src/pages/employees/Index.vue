@@ -70,7 +70,8 @@ export default {
   methods: {
     ...mapActions('employees', [
       'fetch',
-      'getItem'
+      'getItem',
+      'remove'
     ]),
     doDeleteConfirm (id) {
       const resolverPromise = new Promise((resolve, reject) => {
@@ -96,7 +97,7 @@ export default {
         .onCancel(() => {})
     },
     doDeleteAsset (id) {
-      this.delete({ id })
+      this.remove({ id })
         .then(() => {
           this.$q.notify({
             type: 'positive',

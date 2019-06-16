@@ -41,7 +41,15 @@ export default {
     filters: 'Filter',
     search: 'Search',
     reset: 'Reset',
-    add: 'Add'
+    add: 'Add',
+    confirm_delete_cancel: 'Cancel',
+    confirm_delete_ok: 'Delete',
+    confirm_delete_message: 'Are you sure you want to delete this entry?',
+    confirm_delete_title: 'Warning!',
+    delete_notifications: {
+      success: 'Successfully deleted entry',
+      fail: 'Error deleting the entry'
+    }
   },
   employees: {
     firstName: 'Firstname',

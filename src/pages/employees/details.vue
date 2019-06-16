@@ -34,14 +34,116 @@
             <form class="column" @submit.prevent>
               <div class="layout-padding">
                 <q-input
-                  v-model="item.name"
+                  v-model="item.FirstName"
                   color="dark"
                   required
                   autocapitalize="words"
-                  :float-label="$t('services.fields.name.label')"
-                  @input="doTouch($v.item.name)"
-                  :error="$v.item.name.$error"
-                  :error-message="$t('employees.fields.name.error')"></q-input>
+                  :label="$t('employees.fields.firstname.label')"
+                  @input="doTouch($v.item.FirstName)"
+                  :error="$v.item.FirstName.$error"
+                  :error-message="$t('employees.fields.firstname.error')"></q-input>
+                <q-input
+                  v-model="item.LastName"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.lastname.label')"
+                  @input="doTouch($v.item.LastName)"
+                  :error="$v.item.LastName.$error"
+                  :error-message="$t('employees.fields.lastname.error')"></q-input>
+                <q-input
+                  v-model="item.Email"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  type="email"
+                  :label="$t('employees.fields.email.label')"
+                  @input="doTouch($v.item.Email)"
+                  :error="$v.item.Email.$error"
+                  :error-message="$t('employees.fields.email.error')"></q-input>
+                <q-input
+                  v-model="item.PhoneNo"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.phoneNo.label')"
+                  @input="doTouch($v.item.PhoneNo)"
+                  :error="$v.item.PhoneNo.$error"
+                  :error-message="$t('employees.fields.phoneNo.error')"></q-input>
+                <q-input
+                  v-model="item.Birthdate"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  type="date"
+                  stack-label
+                  :label="$t('employees.fields.birthdate.label')"
+                  @input="doTouch($v.item.Birthdate)"
+                  :error="$v.item.Birthdate.$error"
+                  :error-message="$t('employees.fields.birthdate.error')"></q-input>
+                <q-input
+                  v-model="item.PositionTitle"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.positionTitle.label')"
+                  @input="doTouch($v.item.PositionTitle)"
+                  :error="$v.item.PositionTitle.$error"
+                  :error-message="$t('employees.fields.positionTitle.error')"></q-input>
+                <q-input
+                  v-model="item.Description"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.description.label')"
+                  @input="doTouch($v.item.Description)"
+                  :error="$v.item.Description.$error"
+                  :error-message="$t('employees.fields.description.error')"></q-input>
+                <q-input
+                  v-model.number="item.Commission"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.commission.label')"
+                  @input="doTouch($v.item.Commission)"
+                  :error="$v.item.Commission.$error"
+                  :error-message="$t('employees.fields.commission.error')"></q-input>
+                <q-select
+                  v-model="item.Role_ID"
+                  color="dark"
+                  required
+                  emit-value
+                  map-options
+                  :options="roleOptions"
+                  autocapitalize="words"
+                  :label="$t('employees.fields.role.label')"
+                  @input="doTouch($v.item.Role_ID)"
+                  :error="$v.item.Role_ID.$error"
+                  :error-message="$t('employees.fields.role.error')"></q-select>
+                <q-select
+                  v-model="item.Salary_ID"
+                  color="dark"
+                  required
+                  emit-value
+                  map-options
+                  :options="salaryOptions"
+                  autocapitalize="words"
+                  :label="$t('employees.fields.salary.label')"
+                  @input="doTouch($v.item.Salary_ID)"
+                  :error="$v.item.Salary_ID.$error"
+                  :error-message="$t('employees.fields.salary.error')"></q-select>
+                <q-select
+                  v-model="item.Manager_ID"
+                  color="dark"
+                  required
+                  emit-value
+                  map-options
+                  :options="managerOptions"
+                  autocapitalize="words"
+                  :label="$t('employees.fields.manager.label')"
+                  @input="doTouch($v.item.Manager_ID)"
+                  :error="$v.item.Manager_ID.$error"
+                  :error-message="$t('employees.fields.manager.error')"></q-select>
               </div>
             </form>
           </q-page>
@@ -55,7 +157,7 @@
 
 <script>
 import { clone } from 'quasar'
-import { required } from 'vuelidate/lib/validators'
+import { required, email, numeric } from 'vuelidate/lib/validators'
 
 const icons = {
   add: 'add',
@@ -69,7 +171,10 @@ export default {
   props: {
     value: Object,
     locked: Boolean,
-    usage: String
+    usage: String,
+    roles: Array,
+    salaries: Array,
+    users: Array
   },
   data () {
     return {
@@ -78,7 +183,39 @@ export default {
   },
   validations: {
     item: {
-      name: {
+      FirstName: {
+        required
+      },
+      LastName: {
+        required
+      },
+      Email: {
+        required,
+        email
+      },
+      Birthdate: {
+        required
+      },
+      PhoneNo: {
+        required,
+        numeric
+      },
+      PositionTitle: {
+        required
+      },
+      Description: {
+        required
+      },
+      Commission: {
+        required
+      },
+      Role_ID: {
+        required
+      },
+      Salary_ID: {
+        required
+      },
+      Manager_ID: {
         required
       }
     }
@@ -95,6 +232,25 @@ export default {
     }
   },
   computed: {
+    salaryOptions () {
+      return this.salaries.map((o) => ({
+        label: `Amount: ${o.Amount}`,
+        sublabel: `Pay date: ${o.Paydate}`,
+        value: o.ID
+      }))
+    },
+    roleOptions () {
+      return this.roles.map((o) => ({
+        label: o.Type,
+        value: o.ID
+      }))
+    },
+    managerOptions () {
+      return this.users.map((o) => ({
+        label: `${o.FirstName} ${o.LastName}`,
+        value: o.ID
+      }))
+    },
     actions () {
       const actionsList = this.value.actions && this.value.actions.length ? this.value.actions : ['cancel']
       const last = actionsList.length - 1

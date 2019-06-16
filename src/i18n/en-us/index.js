@@ -65,7 +65,53 @@ export default {
     email: 'Email',
     phoneNo: 'Phone number',
     birthdate: 'Birthdate',
-    positionTitle: 'Position title'
+    positionTitle: 'Position title',
+    fields: {
+      firstname: {
+        label: 'Firstname',
+        error: 'Please add the firstname'
+      },
+      lastname: {
+        label: 'Lastname',
+        error: 'Please add the lastname'
+      },
+      birthdate: {
+        label: 'Birthdate',
+        error: 'Please add the birthdate'
+      },
+      phoneNo: {
+        label: 'Phone Number',
+        error: 'Please add the phone number'
+      },
+      email: {
+        label: 'Email',
+        error: 'Please add the email'
+      },
+      description: {
+        label: 'Description',
+        error: 'Please add the description'
+      },
+      positionTitle: {
+        label: 'Position Title',
+        error: 'Please add the position title'
+      },
+      role: {
+        label: 'Role',
+        error: 'Please add the role'
+      },
+      manager: {
+        label: 'Manager',
+        error: 'Please add the manager'
+      },
+      salary: {
+        label: 'Salary',
+        error: 'Please add the salary'
+      },
+      commission: {
+        label: 'Commission',
+        error: 'Please add the commission'
+      }
+    }
   },
   patients: {
     firstName: 'Firstname',

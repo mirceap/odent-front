@@ -29,7 +29,7 @@
     <q-inner-loading :showing="loading">
       <q-spinner-gears size="50px" color="primary" />
     </q-inner-loading>
-    <employees-details ref="employeesDetails" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :usage="usage" ></employees-details>
+    <employees-details ref="employeesDetails" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :usage="usage" :salaries="salaries" :roles="roles" :users="list"></employees-details>
   </q-page>
 </template>
 
@@ -67,7 +67,13 @@ export default {
     ...mapState('employees', [
       'list',
       'loading'
-    ])
+    ]),
+    ...mapState('roles', {
+      roles: 'list'
+    }),
+    ...mapState('salaries', {
+      salaries: 'list'
+    })
   },
   methods: {
     ...mapActions('employees', [
@@ -77,6 +83,12 @@ export default {
       'add',
       'edit'
     ]),
+    ...mapActions('roles', {
+      getRoles: 'fetch'
+    }),
+    ...mapActions('salaries', {
+      getSalaries: 'fetch'
+    }),
     doDeleteConfirm (id) {
       const resolverPromise = new Promise((resolve, reject) => {
         this.dialogResolver = { resolve, reject }
@@ -118,7 +130,20 @@ export default {
         id: null,
         action: 'openAdd'
       }
-      this.onAction(payload)
+      this.getRoles()
+        .then(() => this.getSalaries()
+          .then(() => this.fetch()
+            .then(() => this.onAction(payload))
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+            })
+          )
+          .catch((rejection) => {
+            showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+          })
+          .catch((rejection) => {
+            showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+          }))
     },
     onAction (payload) {
       const action = payload && payload.action ? payload.action : 'cancel'
@@ -142,6 +167,19 @@ export default {
           break
         }
         case 'add': {
+          this.add({ item: payload.item }).then(() => {
+            this.currentItem = {
+              index: -1,
+              item: {},
+              opened: false,
+              locked: false,
+              actions: ['cancel', 'add']
+            }
+            this.$router.replace({ name: this.$route.name })
+          })
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+            })
           break
         }
         case 'update': {
@@ -188,20 +226,39 @@ export default {
       }
       const id = idItem
       this.usage = 'edit'
-      this.getItem({ id }).then(({ item }) => {
-        if (item) {
-          const actions = []
-          actions.push('cancel')
-          actions.push('update')
-          this.currentItem = {
-            index: 0,
-            item,
-            opened: true,
-            locked: false,
-            actions
-          }
-        }
-      })
+      this.getRoles()
+        .then(() => this.getSalaries()
+          .then(() => this.fetch()
+            .then(() => this.getItem({ id })
+              .then(({ item }) => {
+                if (item) {
+                  const actions = []
+                  actions.push('cancel')
+                  actions.push('update')
+                  this.currentItem = {
+                    index: 0,
+                    item,
+                    opened: true,
+                    locked: false,
+                    actions
+                  }
+                }
+              })
+              .catch((rejection) => {
+                showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+              })
+            )
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+            })
+          )
+          .catch((rejection) => {
+            showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+          })
+        )
+        .catch((rejection) => {
+          showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+        })
     }
   },
   watch: {

@@ -8,6 +8,8 @@ import employees from './employees'
 import patients from './patients'
 import settings from './settings'
 import treatments from './treatments'
+import roles from './roles'
+import salaries from './salaries'
 
 // import example from './module-example'
 
@@ -28,7 +30,9 @@ export default function (/* { ssrContext } */) {
       employees,
       patients,
       settings,
-      treatments
+      treatments,
+      roles,
+      salaries
     },
 
     // enable strict mode (adds overhead!)

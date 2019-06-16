@@ -56,7 +56,8 @@ module.exports = function (ctx) {
         'QSpinnerGears',
         'QInput',
         'QFooter',
-        'QHeader'
+        'QHeader',
+        'QSelect'
       ],
 
       directives: [

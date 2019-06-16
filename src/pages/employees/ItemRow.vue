@@ -37,7 +37,7 @@ export default {
   methods: {
     itemOpen () {
       return this.$emit('action', {
-        action: 'edit',
+        action: 'openEdit',
         id: this.item.ID
       })
     },

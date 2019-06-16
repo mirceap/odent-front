@@ -53,7 +53,10 @@ module.exports = function (ctx) {
         'QSpace',
         'QInnerLoading',
         'QMarkupTable',
-        'QSpinnerGears'
+        'QSpinnerGears',
+        'QInput',
+        'QFooter',
+        'QHeader'
       ],
 
       directives: [

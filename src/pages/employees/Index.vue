@@ -3,7 +3,7 @@
     <q-toolbar class="bg-grey-3 margin-bottom">
       <q-space></q-space>
       <q-btn dense class="simple-margin on-right" color="blue"
-             :label="$t('generic.add')"></q-btn>
+             :label="$t('generic.add')" @click="openAdd"></q-btn>
     </q-toolbar>
     <q-banner v-if="!list.length && !loading" rounded class="bg-yellow-8 text-white margin-bottom">
       <div class="q-dialog__title">
@@ -29,6 +29,7 @@
     <q-inner-loading :showing="loading">
       <q-spinner-gears size="50px" color="primary" />
     </q-inner-loading>
+    <employees-details ref="employeesDetails" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :usage="usage" ></employees-details>
   </q-page>
 </template>
 
@@ -40,10 +41,11 @@ import { mapActions, mapState } from 'vuex'
 import CurrentUserMixin from '../../mixins/current-user'
 import EmployeesItemRow from './ItemRow'
 import { showRejectionMessage } from '../../boot/http'
+import EmployeesDetails from './details'
 
 export default {
   name: 'EmployeesIndex',
-  components: { EmployeesItemRow },
+  components: { EmployeesDetails, EmployeesItemRow },
   mixins: [
     CurrentUserMixin
   ],
@@ -109,15 +111,48 @@ export default {
           showRejectionMessage(rejection, 'fleet.actions.delete_notifications.fail')
         })
     },
+    openAdd () {
+      const payload = {
+        id: null,
+        action: 'openAdd'
+      }
+      this.onAction(payload)
+    },
     onAction (payload) {
       const action = payload && payload.action ? payload.action : 'cancel'
       switch (action) {
-        case 'edit': {
+        case 'openEdit': {
           this.$router.push({ name: this.$route.name, params: { idItem: payload.id } })
           break
         }
         case 'delete': {
           this.doDeleteConfirm(payload.id)
+          break
+        }
+        case 'openAdd': {
+          this.currentItem = {
+            index: -1,
+            item: {},
+            opened: true,
+            locked: false,
+            actions: ['cancel', 'add']
+          }
+          break
+        }
+        case 'add': {
+          console.log(payload)
+          break
+        }
+        case 'cancel': {
+          this.currentItem = {
+            index: -1,
+            item: {},
+            opened: false,
+            locked: false,
+            actions: ['cancel', 'add']
+          }
+          this.fetch()
+          this.$router.replace({ name: this.$route.name })
           break
         }
       }

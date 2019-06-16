@@ -1,4 +1,5 @@
 import { http } from '../../boot/http'
+import { clone } from 'quasar'
 
 export const fetch = ({ commit, state }) => {
   commit('SET_LOADING', true)
@@ -22,3 +23,11 @@ export const remove = ({ dispatch }, { id }) => (
       dispatch('fetch')
     }).catch((rejection) => Promise.reject(rejection))
 )
+
+export const getItem = (_, { id }) => http
+  .get(`/patients/${encodeURIComponent(id)}`)
+  .then((response) => {
+    const item = clone(response.data)
+    return Promise.resolve({ item })
+  })
+  .catch((rejection) => Promise.reject(rejection))

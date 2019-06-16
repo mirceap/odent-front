@@ -167,6 +167,7 @@ export default {
           break
         }
         case 'add': {
+          payload.item.Image_ID = 1
           this.add({ item: payload.item }).then(() => {
             this.currentItem = {
               index: -1,

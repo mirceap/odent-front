@@ -103,6 +103,7 @@
                   v-model.number="item.Commission"
                   color="dark"
                   required
+                  type="number"
                   autocapitalize="words"
                   :label="$t('employees.fields.commission.label')"
                   @input="doTouch($v.item.Commission)"
@@ -207,7 +208,8 @@ export default {
         required
       },
       Commission: {
-        required
+        required,
+        numeric
       },
       Role_ID: {
         required

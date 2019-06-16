@@ -31,3 +31,13 @@ export const getItem = (_, { id }) => http
     return Promise.resolve({ item })
   })
   .catch((rejection) => Promise.reject(rejection))
+
+export const add = ({ dispatch }, { item }) => http
+  .post('/appointments', item)
+  .then((response) => {
+    return dispatch('fetch')
+  })
+
+export const edit = ({ dispatch }, { item }) => http
+  .post('/appointments', item)
+  .then(() => dispatch('fetch'))

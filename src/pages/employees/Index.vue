@@ -196,7 +196,7 @@ export default {
     if (!this.currentUser.canSee[this.$route.name]) {
       this.$router.push({ name: 'dashboard' })
     }
-    this.fetch()
+    this.fetch().then(() => this.itemOpen(this.idItem))
   }
 }
 </script>

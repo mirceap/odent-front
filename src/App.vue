@@ -33,7 +33,8 @@ export default {
         patients: state.patients,
         treatments: state.treatments,
         employees: state.employees,
-        appointments: state.appointments
+        appointments: state.appointments,
+        i18n: state.i18n
       }
       if (LocalStorage && LocalStorage.set) {
         LocalStorage.set('state', saveState)

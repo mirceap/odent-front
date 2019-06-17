@@ -18,6 +18,7 @@
           </q-btn>
         </q-toolbar-title>
 
+        <q-select dense borderless :options="languages" emit-value map-options v-model="lang" style="margin-right: 20px"></q-select>
         <div>
           <q-btn-dropdown
             color="white"
@@ -106,11 +107,13 @@
 <script>
 import { mapMutations } from 'vuex'
 import currentUserMixin from '../mixins/current-user'
+import languageMixin from '../mixins/language'
 
 export default {
   name: 'MyLayout',
   mixins: [
-    currentUserMixin
+    currentUserMixin,
+    languageMixin
   ],
   data () {
     return {
@@ -125,5 +128,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus" scoped>
 </style>

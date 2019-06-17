@@ -10,6 +10,7 @@ import settings from './settings'
 import treatments from './treatments'
 import roles from './roles'
 import salaries from './salaries'
+import i18n from './i18n'
 
 // import example from './module-example'
 
@@ -32,7 +33,8 @@ export default function (/* { ssrContext } */) {
       settings,
       treatments,
       roles,
-      salaries
+      salaries,
+      i18n
     },
 
     // enable strict mode (adds overhead!)

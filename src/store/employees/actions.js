@@ -58,8 +58,12 @@ export const add = ({ dispatch, commit }, { item }) => {
 
 export const edit = ({ dispatch, commit }, { item }) => {
   commit('SET_LOADING', true)
+  const id = item.ID
+  delete item.ID
+  delete item.createdAt
+  delete item.updatedAt
   return http
-    .put(`/employees/${encodeURIComponent(item.ID)}`, item)
+    .put(`/employees/${encodeURIComponent(id)}`, item)
     .then(() => dispatch('fetch'))
     .catch((rejection) => {
       commit('SET_LOADING', false)

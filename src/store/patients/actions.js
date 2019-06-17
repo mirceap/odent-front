@@ -45,6 +45,7 @@ export const getItem = ({ commit }, { id }) => {
 
 export const add = ({ dispatch, commit }, { item }) => {
   commit('SET_LOADING', true)
+  item.Image_ID = 1
   return http
     .post('/patients', item)
     .then((response) => {
@@ -58,8 +59,13 @@ export const add = ({ dispatch, commit }, { item }) => {
 
 export const edit = ({ dispatch, commit }, { item }) => {
   commit('SET_LOADING', true)
+  const id = item.ID
+  delete item.ID
+  delete item.createdAt
+  delete item.updatedAt
+  delete item.Role_ID
   return http
-    .put(`/patients/${encodeURIComponent(item.ID)}`, item)
+    .put(`/patients/${encodeURIComponent(id)}`, item)
     .then(() => dispatch('fetch'))
     .catch((rejection) => {
       commit('SET_LOADING', false)

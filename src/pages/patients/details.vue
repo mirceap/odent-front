@@ -34,14 +34,71 @@
             <form class="column" @submit.prevent>
               <div class="layout-padding">
                 <q-input
-                  v-model="item.name"
+                  v-model="item.FirstName"
                   color="dark"
                   required
                   autocapitalize="words"
-                  :float-label="$t('services.fields.name.label')"
-                  @input="doTouch($v.item.name)"
-                  :error="$v.item.name.$error"
-                  :error-message="$t('employees.fields.name.error')"></q-input>
+                  :label="$t('employees.fields.firstname.label')"
+                  @input="doTouch($v.item.FirstName)"
+                  :error="$v.item.FirstName.$error"
+                  :error-message="$t('employees.fields.firstname.error')"></q-input>
+                <q-input
+                  v-model="item.LastName"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.lastname.label')"
+                  @input="doTouch($v.item.LastName)"
+                  :error="$v.item.LastName.$error"
+                  :error-message="$t('employees.fields.lastname.error')"></q-input>
+                <q-input
+                  v-model="item.Email"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  type="email"
+                  :label="$t('employees.fields.email.label')"
+                  @input="doTouch($v.item.Email)"
+                  :error="$v.item.Email.$error"
+                  :error-message="$t('employees.fields.email.error')"></q-input>
+                <q-input
+                  v-model="item.PhoneNo"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.phoneNo.label')"
+                  @input="doTouch($v.item.PhoneNo)"
+                  :error="$v.item.PhoneNo.$error"
+                  :error-message="$t('employees.fields.phoneNo.error')"></q-input>
+                <q-input
+                  v-model="item.Birthdate"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  type="date"
+                  stack-label
+                  :label="$t('employees.fields.birthdate.label')"
+                  @input="doTouch($v.item.Birthdate)"
+                  :error="$v.item.Birthdate.$error"
+                  :error-message="$t('employees.fields.birthdate.error')"></q-input>
+                <q-input
+                  v-model="item.MedicalRecord"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.medicalRecord.label')"
+                  @input="doTouch($v.item.MedicalRecord)"
+                  :error="$v.item.MedicalRecord.$error"
+                  :error-message="$t('employees.fields.MedicalRecord.error')"></q-input>
+                <q-input
+                  v-model="item.Description"
+                  color="dark"
+                  required
+                  autocapitalize="words"
+                  :label="$t('employees.fields.description.label')"
+                  @input="doTouch($v.item.Description)"
+                  :error="$v.item.Description.$error"
+                  :error-message="$t('employees.fields.description.error')"></q-input>
               </div>
             </form>
           </q-page>
@@ -55,7 +112,7 @@
 
 <script>
 import { clone } from 'quasar'
-import { required } from 'vuelidate/lib/validators'
+import { required, email, numeric } from 'vuelidate/lib/validators'
 
 const icons = {
   add: 'add',
@@ -78,7 +135,27 @@ export default {
   },
   validations: {
     item: {
-      name: {
+      FirstName: {
+        required
+      },
+      LastName: {
+        required
+      },
+      Email: {
+        required,
+        email
+      },
+      Birthdate: {
+        required
+      },
+      PhoneNo: {
+        required,
+        numeric
+      },
+      MedicalRecord: {
+        required
+      },
+      Description: {
         required
       }
     }

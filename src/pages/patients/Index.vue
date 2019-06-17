@@ -29,7 +29,7 @@
     <q-inner-loading :showing="loading">
       <q-spinner-gears size="50px" color="primary" />
     </q-inner-loading>
-    <patients-details ref="patientsDetails" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :usage="usage" ></patients-details>
+    <patients-details ref="patientsDetails" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :usage="usage"></patients-details>
   </q-page>
 </template>
 
@@ -37,7 +37,7 @@
 </style>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import CurrentUserMixin from '../../mixins/current-user'
 import PatientsItemRow from './ItemRow'
 import { showRejectionMessage } from '../../boot/http'
@@ -76,6 +76,9 @@ export default {
       'remove',
       'add',
       'edit'
+    ]),
+    ...mapMutations('patients', [
+      'SET_LOADING'
     ]),
     doDeleteConfirm (id) {
       const resolverPromise = new Promise((resolve, reject) => {
@@ -119,6 +122,9 @@ export default {
         action: 'openAdd'
       }
       this.onAction(payload)
+        .catch((rejection) => {
+          showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+        })
     },
     onAction (payload) {
       const action = payload && payload.action ? payload.action : 'cancel'
@@ -142,6 +148,19 @@ export default {
           break
         }
         case 'add': {
+          this.add({ item: payload.item }).then(() => {
+            this.currentItem = {
+              index: -1,
+              item: {},
+              opened: false,
+              locked: false,
+              actions: ['cancel', 'add']
+            }
+            this.$router.replace({ name: this.$route.name })
+          })
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+            })
           break
         }
         case 'update': {
@@ -188,20 +207,26 @@ export default {
       }
       const id = idItem
       this.usage = 'edit'
-      this.getItem({ id }).then(({ item }) => {
-        if (item) {
-          const actions = []
-          actions.push('cancel')
-          actions.push('update')
-          this.currentItem = {
-            index: 0,
-            item,
-            opened: true,
-            locked: false,
-            actions
+      this.SET_LOADING(true)
+      this.getItem({ id })
+        .then(({ item }) => {
+          if (item) {
+            const actions = []
+            actions.push('cancel')
+            actions.push('update')
+            this.currentItem = {
+              index: 0,
+              item,
+              opened: true,
+              locked: false,
+              actions
+            }
           }
-        }
-      })
+        })
+        .catch((rejection) => {
+          this.SET_LOADING(false)
+          showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+        })
     }
   },
   watch: {

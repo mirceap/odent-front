@@ -37,7 +37,7 @@
 </style>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import CurrentUserMixin from '../../mixins/current-user'
 import EmployeesItemRow from './ItemRow'
 import { showRejectionMessage } from '../../boot/http'
@@ -89,6 +89,9 @@ export default {
     ...mapActions('salaries', {
       getSalaries: 'fetch'
     }),
+    ...mapMutations('employees', [
+      'SET_LOADING'
+    ]),
     doDeleteConfirm (id) {
       const resolverPromise = new Promise((resolve, reject) => {
         this.dialogResolver = { resolve, reject }
@@ -227,6 +230,7 @@ export default {
       }
       const id = idItem
       this.usage = 'edit'
+      this.SET_LOADING(true)
       this.getRoles()
         .then(() => this.getSalaries()
           .then(() => this.fetch()
@@ -246,18 +250,22 @@ export default {
                 }
               })
               .catch((rejection) => {
+                this.SET_LOADING(false)
                 showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
               })
             )
             .catch((rejection) => {
+              this.SET_LOADING(false)
               showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
             })
           )
           .catch((rejection) => {
+            this.SET_LOADING(false)
             showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
           })
         )
         .catch((rejection) => {
+          this.SET_LOADING(false)
           showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
         })
     }

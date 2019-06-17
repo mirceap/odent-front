@@ -245,7 +245,7 @@ export default {
       return this.roles.map((o) => ({
         label: o.Type,
         value: o.ID
-      }))
+      })).filter((o) => o.label !== 'Patient')
     },
     managerOptions () {
       return this.users.map((o) => ({

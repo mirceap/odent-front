@@ -15,12 +15,15 @@ const getRejectionMessage = (rejection, fallback = 'http.an_unknown_error_occure
   }
   if (rejection.response) {
     if (rejection.response.data) {
-      return rejection.response.data.Message ||
-        rejection.response.data.message ||
-        rejection.response.data.error_description ||
-        rejection.response.data.error ||
-        rejection.response.data.errorMessage ||
-        fallback
+      if (rejection.response.data.details) {
+        return rejection.response.data.Message ||
+          rejection.response.data.message ||
+          rejection.response.data.error_description ||
+          rejection.response.data.error ||
+          rejection.response.data.errorMessage ||
+          rejection.response.data.details[0].message ||
+          fallback
+      }
     }
     return rejection.response.statusText || rejection.response.status || fallback
   }

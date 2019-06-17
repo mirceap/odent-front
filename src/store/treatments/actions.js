@@ -58,12 +58,13 @@ export const add = ({ dispatch, commit }, { item }) => {
 
 export const edit = ({ dispatch, commit }, { item }) => {
   commit('SET_LOADING', true)
+  let object = clone(item)
   const id = item.ID
-  delete item.ID
-  delete item.createdAt
-  delete item.updatedAt
+  delete object.ID
+  delete object.createdAt
+  delete object.updatedAt
   return http
-    .put(`/treatments/${encodeURIComponent(id)}`, item)
+    .put(`/treatments/${encodeURIComponent(id)}`, object)
     .then(() => dispatch('fetch'))
     .catch((rejection) => {
       commit('SET_LOADING', false)

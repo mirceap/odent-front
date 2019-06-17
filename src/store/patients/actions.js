@@ -19,7 +19,7 @@ export const fetch = ({ commit, state }) => {
 
 export const remove = ({ dispatch, commit }, { id }) => {
   commit('SET_LOADING', true)
-  return http.delete(`/treatments/${encodeURIComponent(id)}`)
+  return http.delete(`/patients/${encodeURIComponent(id)}`)
     .then(() => {
       dispatch('fetch')
     }).catch((rejection) => {
@@ -59,13 +59,14 @@ export const add = ({ dispatch, commit }, { item }) => {
 
 export const edit = ({ dispatch, commit }, { item }) => {
   commit('SET_LOADING', true)
+  let object = clone(item)
   const id = item.ID
-  delete item.ID
-  delete item.createdAt
-  delete item.updatedAt
-  delete item.Role_ID
+  delete object.ID
+  delete object.createdAt
+  delete object.updatedAt
+  delete object.Role_ID
   return http
-    .put(`/patients/${encodeURIComponent(id)}`, item)
+    .put(`/patients/${encodeURIComponent(id)}`, object)
     .then(() => dispatch('fetch'))
     .catch((rejection) => {
       commit('SET_LOADING', false)

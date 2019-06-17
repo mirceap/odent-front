@@ -122,9 +122,6 @@ export default {
         action: 'openAdd'
       }
       this.onAction(payload)
-        .catch((rejection) => {
-          showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
-        })
     },
     onAction (payload) {
       const action = payload && payload.action ? payload.action : 'cancel'

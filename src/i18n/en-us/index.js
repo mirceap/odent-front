@@ -9,8 +9,17 @@ export default {
     sign_in_error: '',
     log_in_admin: 'Log In as Admin',
     log_in_doctor: 'Log In as Doctor',
-    log_in_pacient: 'Log In as Pacient',
-    log_out: 'Log Out'
+    log_in_pacient: 'Log In as Patient',
+    log_out: 'Log Out',
+    log_in: 'Log in',
+    fields: {
+      user: {
+        label: 'User'
+      },
+      password: {
+        label: 'Password'
+      }
+    }
   },
   menu: {
     dashboard: 'Dashboard',

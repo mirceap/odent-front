@@ -9,7 +9,7 @@ export default {
     sign_in_error: '',
     log_in_admin: 'Autentificare ca Admin',
     log_in_doctor: 'Autentificare ca Doctor',
-    log_in_pacient: 'Autentificare ca Pacient',
+    log_in_patient: 'Autentificare ca Pacient',
     log_out: 'Iesire din cont'
   },
   menu: {

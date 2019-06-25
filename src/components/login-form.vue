@@ -3,22 +3,36 @@
     <q-card
       class="my-card text-white q-layout-padding row justify-center"
     >
-      <q-card-section>
+      <q-card-section class="text-center full-width">
         <div class="text-h6 margins">{{$t('auth.sign_in_title')}}</div>
-        <div class="text-subtitle2 margins">{{$t('auth.sign_in_error')}}</div>
       </q-card-section>
 
       <q-card-section>
-        <q-btn
-          :label="$t('auth.log_in_admin')" @click="mockupLogin('admin')" class="margins" color="white" text-color="black"></q-btn>
+        <div class="text-subtitle2 margins">{{ error }}</div>
+      </q-card-section>
+
+      <q-card-section>
+        <form class="column" @submit.prevent>
+          <div class="layout-padding">
+            <q-input
+              class="margin-bottom"
+              v-model="loginInfo.user"
+              bg-color="white"
+              rounded outlined
+              required
+              :label="$t('auth.fields.user.label')"></q-input>
+            <q-input
+              v-model="loginInfo.password"
+              bg-color="white"
+              rounded outlined
+              required
+              :label="$t('auth.fields.password.label')"></q-input>
+          </div>
+        </form>
       </q-card-section>
       <q-card-section>
         <q-btn
-          :label="$t('auth.log_in_doctor')" @click="mockupLogin('doctor')" class="margins" color="white" text-color="black"></q-btn>
-      </q-card-section>
-      <q-card-section>
-        <q-btn
-          :label="$t('auth.log_in_pacient')" @click="mockupLogin('patient')" class="margins" color="white" text-color="black"></q-btn>
+          :label="$t('auth.log_in')" @click="mockupLoginWithPassword()" class="margins" color="white" text-color="black"></q-btn>
       </q-card-section>
     </q-card>
   </div>
@@ -45,12 +59,37 @@ export default {
   props: {
     open: Boolean
   },
+  data () {
+    return {
+      loginInfo: {
+        user: '',
+        password: ''
+      },
+      error: ''
+    }
+  },
   methods: {
     ...mapMutations('auth', [
       'SET_MOCKUP'
     ]),
     mockupLogin (role) {
       this.SET_MOCKUP(role)
+    },
+    mockupLoginWithPassword () {
+      if (this.loginInfo.user === this.loginInfo.password) {
+        switch (this.loginInfo.user) {
+          case 'admin': this.mockupLogin('admin'); break
+          case 'patient': this.mockupLogin('patient'); break
+          case 'doctor': this.mockupLogin('doctor'); break
+          default: this.error = 'Wrong credentials!'
+        }
+      } else {
+        this.error = 'Wrong credentials'
+        this.loginInfo = {
+          user: '',
+          password: ''
+        }
+      }
     }
   }
 }

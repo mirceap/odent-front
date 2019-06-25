@@ -18,8 +18,10 @@
     <td class="text-left" @click="itemOpen">
       {{item.MedicalRecord}}
     </td>
-    <td>
-      <q-btn round dense icon="delete" @click="itemDelete">
+    <td class="on-right">
+      <q-btn round dense icon="delete" style="margin-right: 10px" @click="itemDelete">
+      </q-btn>
+      <q-btn round dense icon="pageview" @click="itemTreatment">
       </q-btn>
     </td>
   </tr>
@@ -44,6 +46,12 @@ export default {
     itemDelete () {
       return this.$emit('action', {
         action: 'delete',
+        id: this.item.ID
+      })
+    },
+    itemTreatment () {
+      return this.$emit('action', {
+        action: 'openTreatment',
         id: this.item.ID
       })
     }

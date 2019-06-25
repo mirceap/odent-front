@@ -68,6 +68,9 @@ export default {
       fail: 'Error deleting the entry'
     }
   },
+  appointments: {
+    selectedDoctor: 'Doctor'
+  },
   employees: {
     firstName: 'Firstname',
     lastName: 'Lastname',

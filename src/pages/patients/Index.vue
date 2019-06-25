@@ -30,6 +30,7 @@
       <q-spinner-gears size="50px" color="primary" />
     </q-inner-loading>
     <patients-details ref="patientsDetails" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :usage="usage"></patients-details>
+    <patients-treatments ref="patientsTreatments" v-if="viewTreatments" :value="viewTreatments" @action="onAction"></patients-treatments>
   </q-page>
 </template>
 
@@ -42,10 +43,11 @@ import CurrentUserMixin from '../../mixins/current-user'
 import PatientsItemRow from './ItemRow'
 import { showRejectionMessage } from '../../boot/http'
 import PatientsDetails from './details'
+import PatientsTreatments from './treatments'
 
 export default {
   name: 'PatientsIndex',
-  components: { PatientsDetails, PatientsItemRow },
+  components: { PatientsDetails, PatientsItemRow, PatientsTreatments },
   mixins: [
     CurrentUserMixin
   ],
@@ -60,7 +62,8 @@ export default {
         item: undefined,
         opened: false,
         locked: false
-      }
+      },
+      viewTreatments: false
     }
   },
   computed: {
@@ -125,6 +128,7 @@ export default {
     },
     onAction (payload) {
       const action = payload && payload.action ? payload.action : 'cancel'
+      console.log(action)
       switch (action) {
         case 'openEdit': {
           this.$router.push({ name: this.$route.name, params: { idItem: payload.id } })
@@ -142,6 +146,10 @@ export default {
             locked: false,
             actions: ['cancel', 'add']
           }
+          break
+        }
+        case 'openTreatment': {
+          this.viewTreatments = true
           break
         }
         case 'add': {
@@ -187,6 +195,9 @@ export default {
           this.fetch()
           this.$router.replace({ name: this.$route.name })
           break
+        }
+        case 'dismissTreatment': {
+          this.viewTreatments = false
         }
       }
     },

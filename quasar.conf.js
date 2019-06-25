@@ -57,7 +57,9 @@ module.exports = function (ctx) {
         'QInput',
         'QFooter',
         'QHeader',
-        'QSelect'
+        'QSelect',
+        'QTimeline',
+        'QTimelineEntry'
       ],
 
       directives: [

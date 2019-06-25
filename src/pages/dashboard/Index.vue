@@ -67,6 +67,132 @@
         </q-card>
       </div>
     </template>
+    <template v-if="currentUser.is.patient">
+      <q-toolbar class="bg-grey-3">
+        <q-toolbar-title>
+          Your Treatments
+        </q-toolbar-title>
+      </q-toolbar>
+      <q-markup-table class="margin-bottom">
+        <thead>
+        <tr>
+          <th class="text-left">Appointment Date</th>
+          <th class="text-left">Treatment</th>
+          <th class="text-left">Doctor</th>
+          <th class="text-left">Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="bg-grey-1">
+          <td class="text-left">
+            2019-06-23
+          </td>
+          <td class="text-left">
+            Usual check-up
+          </td>
+          <td class="text-left">
+            Andrei Cazacu
+          </td>
+          <td class="text-left">
+            All good
+          </td>
+        </tr>
+        <tr class="bg-grey-1">
+          <td class="text-left">
+            2019-06-22
+          </td>
+          <td class="text-left">
+            Blood analysis
+          </td>
+          <td class="text-left">
+            Marian Nedelcu
+          </td>
+          <td class="text-left">
+            All good too
+          </td>
+        </tr>
+        <tr class="bg-grey-1">
+          <td class="text-left">
+            2019-06-22
+          </td>
+          <td class="text-left">
+            Usual check-up
+          </td>
+          <td class="text-left">
+            Andrei Cazacu
+          </td>
+          <td class="text-left">
+            All good
+          </td>
+        </tr>
+        <tr class="bg-grey-1">
+          <td class="text-left">
+            2019-06-21
+          </td>
+          <td class="text-left">
+            Blood analysis
+          </td>
+          <td class="text-left">
+            Valeriu Andreescu
+          </td>
+          <td class="text-left">
+            All good too
+          </td>
+        </tr>
+        </tbody>
+      </q-markup-table>
+      <div class="q-px-lg q-pb-md">
+        <q-timeline color="secondary">
+          <q-timeline-entry heading>
+            Previous Appointments
+          </q-timeline-entry>
+
+          <q-timeline-entry
+            title="Appointment with Andrei Cazacu"
+            subtitle="February 22, 1986"
+            color="orange"
+          >
+            <div>
+              Your treatment was Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </q-timeline-entry>
+
+          <q-timeline-entry
+            title="Appointment with Andrei Cazacu"
+            subtitle="February 21, 1986"
+            color="orange"
+          >
+            <div>
+              Your treatment was Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </q-timeline-entry>
+
+          <q-timeline-entry heading>
+            Upcoming Appointments
+          </q-timeline-entry>
+
+          <q-timeline-entry
+            title="Appointment with Valeriu Andreescu"
+            subtitle="February 22, 1986"
+            color="blue"
+          >
+            <div>
+              Your treatment was Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </q-timeline-entry>
+
+          <q-timeline-entry
+            title="Appointment with Matei Iacob"
+            subtitle="February 22, 1986"
+            color="blue"
+          >
+            <div>
+              Your treatment was Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </q-timeline-entry>
+        </q-timeline>
+      </div>
+    </template>
   </q-page>
 </template>
 

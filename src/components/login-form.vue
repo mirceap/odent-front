@@ -26,6 +26,7 @@
               bg-color="white"
               rounded outlined
               required
+              type="password"
               :label="$t('auth.fields.password.label')"></q-input>
           </div>
         </form>

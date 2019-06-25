@@ -10,7 +10,16 @@ export default {
     log_in_admin: 'Autentificare ca Admin',
     log_in_doctor: 'Autentificare ca Doctor',
     log_in_patient: 'Autentificare ca Pacient',
-    log_out: 'Iesire din cont'
+    log_out: 'Iesire din cont',
+    log_in: 'Autentificare',
+    fields: {
+      user: {
+        label: 'User'
+      },
+      password: {
+        label: 'Parola'
+      }
+    }
   },
   menu: {
     dashboard: 'Panou statistici',

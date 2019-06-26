@@ -1,8 +1,8 @@
 {
-  "name": "odent-front",
+  "name": "dentMan-front",
   "version": "0.0.1",
-  "description": "Odent Dentistry CRM frontend app",
-  "productName": "Odent",
+  "description": "DentMan Dentistry CRM frontend app",
+  "productName": "DentMan",
   "cordovaId": "org.cordova.quasar.app",
   "author": "Mircea Pavel",
   "private": true,

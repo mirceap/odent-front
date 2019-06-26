@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <img alt="ODent logo" src="~assets/odent-logo.jpeg">
+    <img alt="ODent logo" src="~assets/dentMan-logo.png">
   </q-page>
 </template>
 

@@ -1,4 +1,4 @@
-# Odent Dentistry SPA
+# DentMan Dentistry SPA
 
 ## Development instructions
 

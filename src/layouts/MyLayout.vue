@@ -14,7 +14,7 @@
 
         <q-toolbar-title>
           <q-btn flat :to="{ path: '/' }">
-            Odent App
+            DentMan App
           </q-btn>
         </q-toolbar-title>
 

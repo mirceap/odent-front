@@ -59,7 +59,8 @@ module.exports = function (ctx) {
         'QHeader',
         'QSelect',
         'QTimeline',
-        'QTimelineEntry'
+        'QTimelineEntry',
+        'QRating'
       ],
 
       directives: [

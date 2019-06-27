@@ -80,6 +80,7 @@
           <th class="text-left">Treatment</th>
           <th class="text-left">Doctor</th>
           <th class="text-left">Details</th>
+          <th class="text-center">Rating</th>
         </tr>
         </thead>
         <tbody>
@@ -96,6 +97,14 @@
           <td class="text-left">
             All good
           </td>
+          <td class="text-center">
+            <q-rating
+              value="1"
+              size="2em"
+              readonly
+              color="blue-5"
+              icon="star_border"></q-rating>
+          </td>
         </tr>
         <tr class="bg-grey-1">
           <td class="text-left">
@@ -109,6 +118,14 @@
           </td>
           <td class="text-left">
             All good too
+          </td>
+          <td class="text-center">
+            <q-rating
+              value="3"
+              size="2em"
+              readonly
+              color="blue-5"
+              icon="star_border"></q-rating>
           </td>
         </tr>
         <tr class="bg-grey-1">
@@ -124,6 +141,14 @@
           <td class="text-left">
             All good
           </td>
+          <td class="text-center">
+            <q-rating
+              value="4"
+              size="2em"
+              readonly
+              color="blue-5"
+              icon="star_border"></q-rating>
+          </td>
         </tr>
         <tr class="bg-grey-1">
           <td class="text-left">
@@ -137,6 +162,14 @@
           </td>
           <td class="text-left">
             All good too
+          </td>
+          <td class="text-center">
+            <q-rating
+              value="5"
+              size="2em"
+              readonly
+              color="blue-5"
+              icon="star_border"></q-rating>
           </td>
         </tr>
         </tbody>

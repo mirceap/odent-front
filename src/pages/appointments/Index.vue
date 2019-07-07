@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row" v-if="currentUser.is.admin">
+    <div class="row" v-if="currentUser.is.admin || currentUser.is.patient">
       <div class="col-md-4 offset-md-4">
         <q-select
           v-model="selectedDoctor"

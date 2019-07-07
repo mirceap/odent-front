@@ -70,108 +70,21 @@
     <template v-if="currentUser.is.patient">
       <q-toolbar class="bg-grey-3">
         <q-toolbar-title>
-          Your Treatments
+          {{$t('dashboard.patient.treatmentLabel')}}
         </q-toolbar-title>
       </q-toolbar>
       <q-markup-table class="margin-bottom">
         <thead>
         <tr>
-          <th class="text-left">Appointment Date</th>
-          <th class="text-left">Treatment</th>
-          <th class="text-left">Doctor</th>
-          <th class="text-left">Details</th>
-          <th class="text-center">Rating</th>
+          <th class="text-left">{{$t('dashboard.patient.appointment')}}</th>
+          <th class="text-left">{{$t('dashboard.patient.treatment')}}</th>
+          <th class="text-left">{{$t('dashboard.patient.doctor')}}</th>
+          <th class="text-left">{{$t('dashboard.patient.details')}}</th>
+          <th class="text-center">{{$t('dashboard.patient.rating')}}</th>
         </tr>
         </thead>
         <tbody>
-        <tr class="bg-grey-1">
-          <td class="text-left">
-            2019-06-23
-          </td>
-          <td class="text-left">
-            Usual check-up
-          </td>
-          <td class="text-left">
-            Andrei Cazacu
-          </td>
-          <td class="text-left">
-            All good
-          </td>
-          <td class="text-center">
-            <q-rating
-              value="1"
-              size="2em"
-              readonly
-              color="blue-5"
-              icon="star_border"></q-rating>
-          </td>
-        </tr>
-        <tr class="bg-grey-1">
-          <td class="text-left">
-            2019-06-22
-          </td>
-          <td class="text-left">
-            Blood analysis
-          </td>
-          <td class="text-left">
-            Marian Nedelcu
-          </td>
-          <td class="text-left">
-            All good too
-          </td>
-          <td class="text-center">
-            <q-rating
-              value="3"
-              size="2em"
-              readonly
-              color="blue-5"
-              icon="star_border"></q-rating>
-          </td>
-        </tr>
-        <tr class="bg-grey-1">
-          <td class="text-left">
-            2019-06-22
-          </td>
-          <td class="text-left">
-            Usual check-up
-          </td>
-          <td class="text-left">
-            Andrei Cazacu
-          </td>
-          <td class="text-left">
-            All good
-          </td>
-          <td class="text-center">
-            <q-rating
-              value="4"
-              size="2em"
-              readonly
-              color="blue-5"
-              icon="star_border"></q-rating>
-          </td>
-        </tr>
-        <tr class="bg-grey-1">
-          <td class="text-left">
-            2019-06-21
-          </td>
-          <td class="text-left">
-            Blood analysis
-          </td>
-          <td class="text-left">
-            Valeriu Andreescu
-          </td>
-          <td class="text-left">
-            All good too
-          </td>
-          <td class="text-center">
-            <q-rating
-              value="5"
-              size="2em"
-              readonly
-              color="blue-5"
-              icon="star_border"></q-rating>
-          </td>
-        </tr>
+          <patient-item-row v-for="item in list" :key="item.appointment.ID" :item="item"></patient-item-row>
         </tbody>
       </q-markup-table>
       <div class="q-px-lg q-pb-md">
@@ -180,49 +93,13 @@
             Previous Appointments
           </q-timeline-entry>
 
-          <q-timeline-entry
-            title="Appointment with Andrei Cazacu"
-            subtitle="February 22, 1986"
-            color="orange"
-          >
-            <div>
-              Your treatment was Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-
-          <q-timeline-entry
-            title="Appointment with Andrei Cazacu"
-            subtitle="February 21, 1986"
-            color="orange"
-          >
-            <div>
-              Your treatment was Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
+          <patient-entry v-for="item in oldListEntry" :key="item.appointment.ID" :item="item" color="orange"></patient-entry>
 
           <q-timeline-entry heading>
             Upcoming Appointments
           </q-timeline-entry>
 
-          <q-timeline-entry
-            title="Appointment with Valeriu Andreescu"
-            subtitle="February 22, 1986"
-            color="blue"
-          >
-            <div>
-              Your treatment was Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-
-          <q-timeline-entry
-            title="Appointment with Matei Iacob"
-            subtitle="February 22, 1986"
-            color="blue"
-          >
-            <div>
-              Your treatment was Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
+          <patient-entry v-for="item in newListEntry" :key="item.appointment.ID" :item="item" color="blue"></patient-entry>
         </q-timeline>
       </div>
     </template>
@@ -233,12 +110,18 @@
 </style>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import CurrentUserMixin from '../../mixins/current-user'
 import { GChart } from 'vue-google-charts'
+import PatientItemRow from './PatientItemRow'
+import { showRejectionMessage } from '../../boot/http'
+import PatientEntry from './PatientEntry'
 
 export default {
   name: 'DashboardIndex',
   components: {
+    PatientEntry,
+    PatientItemRow,
     GChart
   },
   mixins: [
@@ -322,9 +205,31 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('dashboard', [
+      'list'
+    ]),
+    newListEntry () {
+      return this.list.filter((o) => new Date(o.appointment.StartDate) > new Date())
+    },
+    oldListEntry () {
+      return this.list.filter((o) => new Date(o.appointment.StartDate) < new Date())
+    }
+  },
+  methods: {
+    ...mapActions('dashboard', [
+      'fetch'
+    ])
+  },
   mounted () {
     if (!this.currentUser.canSee[this.$route.name]) {
       this.$router.push({ name: 'dashboard' })
+    }
+    if (this.currentUser.is.patient) {
+      this.fetch()
+        .catch((rejection) => {
+          showRejectionMessage(rejection, 'generic.actions.fail')
+        })
     }
   }
 }

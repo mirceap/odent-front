@@ -110,7 +110,7 @@ export default ({ Vue, store }) => {
     (config) => {
       config.headers['Cache-Control'] = 'no-cache'
       if (store.getters['auth/tokenAvailable']) {
-        config.headers.Authorization = `Bearer ${store.getters['auth/tokenAvailable']}`
+        config.headers.Authorization = `${store.getters['auth/tokenAvailable']}`
       }
       return config
     },
@@ -121,7 +121,7 @@ export default ({ Vue, store }) => {
     const originalRequest = config
     if (store.state.auth.credentials.exp < (new Date()).getTime() / 1000) {
       return store.dispatch('auth/refreshToken').then((token) => {
-        originalRequest.Authorization = `Bearer ${token}`
+        originalRequest.Authorization = `${token}`
         return Promise.resolve(originalRequest)
       })
     }

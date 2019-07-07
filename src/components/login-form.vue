@@ -59,6 +59,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
+import { showRejectionMessage } from '../boot/http'
 export default {
   name: 'LoginForm',
   props: {
@@ -100,7 +101,7 @@ export default {
         .catch((rejection) => {
           this.error = 'Login Failed'
           this.loading = false
-          return Promise.reject(rejection)
+          showRejectionMessage(rejection, 'generic.actions.fail')
         })
     }
   }

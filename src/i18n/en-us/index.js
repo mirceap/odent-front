@@ -38,6 +38,16 @@ export default {
     request_cancelled: 'Request cancelled.',
     retry: 'Retry'
   },
+  dashboard: {
+    patient: {
+      treatmentLabel: 'Your treatments',
+      appointment: 'Appointment Date',
+      details: 'Details',
+      doctor: 'Doctor',
+      treatment: 'Treatment',
+      rating: 'Rating'
+    }
+  },
   generic: {
     yes: 'Yes',
     no: 'No',
@@ -54,6 +64,7 @@ export default {
       add: 'Add',
       cancel: 'Cancel',
       update: 'Update',
+      fail: 'Request failed',
       confirm_cancel_cancel: 'Cancel',
       confirm_cancel_ok: 'Ok',
       confirm_cancel_message: 'Are you sure you want to discard your data',

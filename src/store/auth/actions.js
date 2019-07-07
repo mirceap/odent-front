@@ -67,7 +67,7 @@ export const login = ({ commit, dispatch, state }, credentials = {}) => http
   .then(({ data }) => {
     const infoB64 = data.token.split('.')[1]
     let info = JSON.parse(window.atob(infoB64))
-    http.defaults.headers.common.Authorization = `Bearer ${data.token}`
+    http.defaults.headers.common.Authorization = `${data.token}`
     let role = ''
     switch (info.role) {
       case 1: role = 'admin'; break

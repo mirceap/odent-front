@@ -80,7 +80,21 @@ export default {
     }
   },
   appointments: {
-    selectedDoctor: 'Doctor'
+    selectedDoctor: 'Doctor',
+    fields: {
+      doctor: {
+        label: 'Doctor',
+        error: 'Please select the doctor'
+      },
+      startDate: {
+        label: 'Date',
+        error: 'Please select the date'
+      },
+      description: {
+        label: 'Description',
+        error: 'Please add the description'
+      }
+    }
   },
   employees: {
     firstName: 'Firstname',

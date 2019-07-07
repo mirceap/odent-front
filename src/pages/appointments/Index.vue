@@ -21,6 +21,16 @@
           <small v-show="(appointment_props.end - appointment_props.start) > 2">{{appointment_props.data.description}}</small>
         </div>
       </kalendar>
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn
+          fab
+          icon="add"
+          color="primary"
+          @click="showAddApp"
+        >
+        </q-btn>
+      </q-page-sticky>
+      <add-appointment ref="addAppointment" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :doctors="doctorOptions"></add-appointment>
     </q-page>
   </div>
 </template>
@@ -29,60 +39,28 @@
 </style>
 
 <script>
+import { date } from 'quasar'
 import { mapActions, mapState } from 'vuex'
 import { Kalendar } from 'kalendar-vue'
 import 'kalendar-vue/dist/KalendarVue.css'
 import CurrentUserMixin from '../../mixins/current-user'
+import AddAppointment from './add'
+import { showRejectionMessage } from '../../boot/http'
 
 export default {
   name: 'AppointmentsIndex',
   components: {
-    Kalendar
+    Kalendar,
+    AddAppointment
   },
   data () {
     return {
-      appointments: [
-        {
-          from: 'Wed Jun 26 2019 02:00:00',
-          to: 'Wed Jun 26 2019 03:00:00',
-          date: '2019-06-26',
-          data: {
-            title: 'Andrei Ion'
-          }
-        },
-        {
-          from: 'Wed Jun 23 2019 04:00:00',
-          to: 'Wed Jun 23 2019 05:00:00',
-          date: '2019-06-23',
-          data: {
-            title: 'Danaila Marin'
-          }
-        },
-        {
-          from: 'Wed Jun 25 2019 06:00:00',
-          to: 'Wed Jun 25 2019 07:00:00',
-          date: '2019-06-25',
-          data: {
-            title: 'Danaila Marin'
-          }
-        },
-        {
-          from: 'Wed Jun 27 2019 12:00:00',
-          to: 'Wed Jun 27 2019 13:00:00',
-          date: '2019-06-27',
-          data: {
-            title: 'Danaila Marin'
-          }
-        },
-        {
-          from: 'Wed Jun 23 2019 14:00:00',
-          to: 'Wed Jun 23 2019 13:00:00',
-          date: '2019-06-23',
-          data: {
-            title: 'Danaila Marin'
-          }
-        }
-      ],
+      currentItem: {
+        index: -1,
+        item: undefined,
+        opened: false,
+        locked: false
+      },
       selectedDoctor: null,
       calendar_settings: {
         style: 'material_design', // ['flat_design', 'material_design']
@@ -91,7 +69,8 @@ export default {
         cell_height: 10, // !isNaN(Value)
         scrollToNow: false, // Boolean
         current_day: new Date(), // Valid date
-        military_time: true // Boolean
+        military_time: true, // Boolean
+        read_only: true
       }
     }
   },
@@ -99,11 +78,26 @@ export default {
     ...mapState('employees', [
       'list'
     ]),
+    ...mapState('appointments', {
+      appointmentsList: 'list'
+    }),
     doctorOptions () {
-      return this.list.filter((o) => o.Role_ID === 2).map((o) => ({
+      return this.list.map((o) => ({
         value: o.ID,
         label: `${o.FirstName} ${o.LastName}`
       }))
+    },
+    appointments () {
+      return this.appointmentsList.map((o) => {
+        return {
+          from: new Date(o.StartDate),
+          to: new Date(o.EndDate),
+          date: date.formatDate(new Date(o.EndDate), 'YYYY-MM-DD'),
+          data: {
+            title: 'Existing Appointment'
+          }
+        }
+      })
     }
   },
   mixins: [
@@ -118,7 +112,53 @@ export default {
     ]),
     ...mapActions('employees', {
       fetchDoctors: 'fetch'
-    })
+    }),
+    showAddApp () {
+      this.onAction({ action: 'openAdd' })
+    },
+    onAction (payload) {
+      const action = payload && payload.action ? payload.action : 'cancel'
+      switch (action) {
+        case 'openAdd': {
+          this.currentItem = {
+            index: -1,
+            item: {},
+            opened: true,
+            locked: false,
+            actions: ['cancel', 'add']
+          }
+          break
+        }
+        case 'add': {
+          this.add({ item: payload.item }).then(() => {
+            this.currentItem = {
+              index: -1,
+              item: {},
+              opened: false,
+              locked: false,
+              actions: ['cancel', 'add']
+            }
+            this.$router.replace({ name: this.$route.name })
+          })
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+            })
+          break
+        }
+        case 'cancel': {
+          this.currentItem = {
+            index: -1,
+            item: {},
+            opened: false,
+            locked: false,
+            actions: ['cancel', 'add']
+          }
+          this.fetch()
+          this.$router.replace({ name: this.$route.name })
+          break
+        }
+      }
+    }
   },
   mounted () {
     if (!this.currentUser.canSee[this.$route.name]) {

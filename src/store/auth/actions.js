@@ -61,3 +61,27 @@ export const wait = ({ commit, state }, { message, cancellable }) => {
       return Promise.reject(reason)
     })
 }
+
+export const login = ({ commit, dispatch, state }, credentials = {}) => http
+  .post('/login', credentials)
+  .then(({ data }) => {
+    const infoB64 = data.token.split('.')[1]
+    let info = JSON.parse(window.atob(infoB64))
+    http.defaults.headers.common.Authorization = `Bearer ${data.token}`
+    let role = ''
+    switch (info.role) {
+      case 1: role = 'admin'; break
+      case 2: role = 'doctor'; break
+      case 3: role = 'patient'; break
+    }
+    commit('SET_CREDENTIALS', {
+      role: role,
+      token: data.token,
+      name: info.name,
+      lang: 'en',
+      id: Number(info.sub)
+    })
+  })
+  .catch((rejection) => {
+    return Promise.reject(rejection)
+  })

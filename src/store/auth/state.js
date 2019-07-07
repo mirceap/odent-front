@@ -3,7 +3,8 @@ export default {
     token: null,
     name: null,
     lang: 'en',
-    role: null
+    role: null,
+    id: null
   },
   message: null,
   cancellable: false

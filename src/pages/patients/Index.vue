@@ -128,7 +128,6 @@ export default {
     },
     onAction (payload) {
       const action = payload && payload.action ? payload.action : 'cancel'
-      console.log(action)
       switch (action) {
         case 'openEdit': {
           this.$router.push({ name: this.$route.name, params: { idItem: payload.id } })

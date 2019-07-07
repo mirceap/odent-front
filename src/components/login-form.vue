@@ -8,7 +8,7 @@
       </q-card-section>
 
       <q-card-section>
-        <div class="text-subtitle2 margins">{{ error }}</div>
+        <div class="text-subtitle2 margins text-redasd">{{ error }}</div>
       </q-card-section>
 
       <q-card-section>
@@ -20,6 +20,7 @@
               bg-color="white"
               rounded outlined
               required
+              :error="$v.loginInfo.user.$error"
               :label="$t('auth.fields.user.label')"></q-input>
             <q-input
               v-model="loginInfo.password"
@@ -27,14 +28,16 @@
               rounded outlined
               required
               type="password"
+              :error="$v.loginInfo.password.$error"
               :label="$t('auth.fields.password.label')"></q-input>
           </div>
         </form>
       </q-card-section>
       <q-card-section>
         <q-btn
-          :label="$t('auth.log_in')" @click="mockupLoginWithPassword()" class="margins" color="white" text-color="black"></q-btn>
+          :label="$t('auth.log_in')" @click="loginBtn()" class="margins" color="white" text-color="black"></q-btn>
       </q-card-section>
+      <q-inner-loading :showing="loading"></q-inner-loading>
     </q-card>
   </div>
 </template>
@@ -54,7 +57,8 @@
 </style>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
+import { required } from 'vuelidate/lib/validators'
 export default {
   name: 'LoginForm',
   props: {
@@ -66,31 +70,38 @@ export default {
         user: '',
         password: ''
       },
-      error: ''
+      error: '',
+      loading: false
+    }
+  },
+  validations: {
+    loginInfo: {
+      user: {
+        required
+      },
+      password: {
+        required
+      }
     }
   },
   methods: {
-    ...mapMutations('auth', [
-      'SET_MOCKUP'
+    ...mapActions('auth', [
+      'login'
     ]),
-    mockupLogin (role) {
-      this.SET_MOCKUP(role)
-    },
-    mockupLoginWithPassword () {
-      if (this.loginInfo.user === this.loginInfo.password) {
-        switch (this.loginInfo.user) {
-          case 'admin': this.mockupLogin('admin'); break
-          case 'patient': this.mockupLogin('patient'); break
-          case 'doctor': this.mockupLogin('doctor'); break
-          default: this.error = 'Wrong credentials!'
-        }
-      } else {
-        this.error = 'Wrong credentials'
-        this.loginInfo = {
-          user: '',
-          password: ''
-        }
+    loginBtn () {
+      this.loading = true
+      if (this.$v.loginInfo.$invalid) {
+        this.error = 'Please complete all fields'
       }
+      this.login({ email: this.loginInfo.user, password: this.loginInfo.password })
+        .then(() => {
+          this.loading = false
+        })
+        .catch((rejection) => {
+          this.error = 'Login Failed'
+          this.loading = false
+          return Promise.reject(rejection)
+        })
     }
   }
 }

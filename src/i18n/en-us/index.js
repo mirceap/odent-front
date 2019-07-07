@@ -14,7 +14,7 @@ export default {
     log_in: 'Log in',
     fields: {
       user: {
-        label: 'User'
+        label: 'Email'
       },
       password: {
         label: 'Password'

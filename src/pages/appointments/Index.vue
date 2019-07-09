@@ -158,7 +158,7 @@ export default {
             payload.item.Status_ID = 2
           }
           if (this.currentUser.is.doctor) {
-            payload.item.Doctor_ID = Number(this.currentUser.credentials.id)
+            payload.item.Doctor_ID = this.currentUser.credentials.id
             payload.item.Patient_ID = String(payload.item.Patient_ID)
           }
           this.add({ item: payload.item }).then(() => {

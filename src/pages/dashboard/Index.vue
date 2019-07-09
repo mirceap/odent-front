@@ -129,10 +129,6 @@ export default {
   ],
   data () {
     return {
-      chartData1: [
-        ['', 'Doctor #1', 'Doctor #2', 'Doctor #3'],
-        ['Sums', 1000, 400, 200]
-      ],
       chartOptions1: {
         chart: {
           title: 'Money input',
@@ -209,6 +205,18 @@ export default {
     ...mapState('dashboard', [
       'list'
     ]),
+    chartData1 () {
+      if (this.list && this.list.dailyChart) {
+        return [
+          this.list.dailyChart.doctors,
+          this.list.dailyChart.sums
+        ]
+      }
+      return [
+        [],
+        []
+      ]
+    },
     newListEntry () {
       return this.list.filter((o) => new Date(o.StartDate) > new Date())
     },
@@ -225,12 +233,10 @@ export default {
     if (!this.currentUser.canSee[this.$route.name]) {
       this.$router.push({ name: 'dashboard' })
     }
-    if (this.currentUser.is.patient) {
-      this.fetch()
-        .catch((rejection) => {
-          showRejectionMessage(rejection, 'generic.actions.fail')
-        })
-    }
+    this.fetch()
+      .catch((rejection) => {
+        showRejectionMessage(rejection, 'generic.actions.fail')
+      })
   }
 }
 </script>

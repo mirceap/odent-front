@@ -142,7 +142,7 @@ export default {
               id: o.ID
             }
           }
-        } else if (this.currentUser.is.doctor) {
+        } else if (this.currentUser.is.doctor || this.currentUser.is.admin) {
           return {
             from: new Date(o.StartDate),
             to: new Date(o.EndDate),

@@ -231,7 +231,6 @@ export default {
                 actions.push('cancel')
                 actions.push('update')
                 item.StartDate = date.formatDate(new Date(item.StartDate), 'YYYY-MM-DD HH:mm')
-                console.log(item.StartDate)
                 this.currentItem = {
                   index: 0,
                   item,

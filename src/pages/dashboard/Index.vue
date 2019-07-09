@@ -206,7 +206,7 @@ export default {
       'list'
     ]),
     chartData1 () {
-      if (this.list && this.list.dailyChart) {
+      if (this.list && this.list.dailyChart && this.currentUser.is.admin) {
         return [
           this.list.dailyChart.doctors,
           this.list.dailyChart.sums
@@ -218,10 +218,22 @@ export default {
       ]
     },
     newListEntry () {
-      return this.list.filter((o) => new Date(o.StartDate) > new Date())
+      if (!this.currentUser.is.patient) {
+        return []
+      }
+      if (this.list) {
+        return this.list.filter((o) => new Date(o.StartDate) > new Date())
+      }
+      return []
     },
     oldListEntry () {
-      return this.list.filter((o) => new Date(o.StartDate) < new Date())
+      if (!this.currentUser.is.patient) {
+        return []
+      }
+      if (this.list) {
+        return this.list.filter((o) => new Date(o.StartDate) < new Date())
+      }
+      return []
     }
   },
   methods: {

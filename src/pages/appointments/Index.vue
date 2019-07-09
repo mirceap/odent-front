@@ -16,8 +16,8 @@
     </div>
     <q-page class="flex flex-center">
       <kalendar class="full-width" :configuration="calendar_settings" :appointments="appointments">
-        <div slot="details-card" slot-scope="{appointment_props}">
-          <div class="appointment-title">{{appointment_props.data.title}}</div>
+        <div slot="details-card" slot-scope="{appointment_props}" >
+          <div class="appointment-title" @click="onAction({ action: 'openEdit', id: appointment_props.data.id })">{{appointment_props.data.title}}</div>
           <small v-show="(appointment_props.end - appointment_props.start) > 2">{{appointment_props.data.description}}</small>
         </div>
       </kalendar>
@@ -108,12 +108,24 @@ export default {
     },
     appointments () {
       return this.appointmentsList.map((o) => {
-        return {
-          from: new Date(o.StartDate),
-          to: new Date(o.EndDate),
-          date: date.formatDate(new Date(o.EndDate), 'YYYY-MM-DD'),
-          data: {
-            title: 'Existing Appointment'
+        if (this.currentUser.is.patient) {
+          return {
+            from: new Date(o.StartDate),
+            to: new Date(o.EndDate),
+            date: date.formatDate(new Date(o.EndDate), 'YYYY-MM-DD'),
+            data: {
+              title: this.currentUser.credentials.id === o.Patient.User.ID ? `Your appointment` : 'Existing Appointment',
+              id: o.Id
+            }
+          }
+        } else if (this.currentUser.is.doctor) {
+          return {
+            from: new Date(o.StartDate),
+            to: new Date(o.EndDate),
+            date: date.formatDate(new Date(o.EndDate), 'YYYY-MM-DD'),
+            data: {
+              title: `Appointment with ${o.Patient.User.FirstName} ${o.Patient.User.LastName}`
+            }
           }
         }
       })
@@ -174,6 +186,18 @@ export default {
             .catch((rejection) => {
               showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
             })
+          break
+        }
+        case 'openEdit': {
+          if (this.currentUser.is.doctor) {
+            this.currentItem = {
+              index: -1,
+              item: {},
+              opened: true,
+              locked: false,
+              actions: ['cancel', 'add']
+            }
+          }
           break
         }
         case 'cancel': {

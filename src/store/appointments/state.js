@@ -1,4 +1,5 @@
 export default {
   list: [],
-  loading: false
+  loading: false,
+  statusList: []
 }

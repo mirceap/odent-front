@@ -79,7 +79,7 @@ export const login = ({ commit, dispatch, state }, credentials = {}) => http
       token: data.token,
       name: info.name,
       lang: 'en',
-      id: Number(info.sub)
+      id: info.sub
     })
   })
   .catch((rejection) => {

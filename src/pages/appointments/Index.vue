@@ -21,7 +21,7 @@
           <small v-show="(appointment_props.end - appointment_props.start) > 2">{{appointment_props.data.description}}</small>
         </div>
       </kalendar>
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-page-sticky v-if="currentUser.is.patient || currentUser.is.doctor" position="bottom-right" :offset="[18, 18]">
         <q-btn
           fab
           icon="add"
@@ -30,7 +30,10 @@
         >
         </q-btn>
       </q-page-sticky>
-      <add-appointment ref="addAppointment" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :doctors="doctorOptions"></add-appointment>
+      <add-appointment ref="addAppointment" v-if="currentItem.item && (currentUser.is.patient || currentUser.is.doctor)"
+                       :value="currentItem" :locked="currentItem.locked" @action="onAction" :doctors="doctorOptions"
+                       :status="statusOptions" :patients="patientsOptions"
+      ></add-appointment>
     </q-page>
   </div>
 </template>
@@ -78,13 +81,29 @@ export default {
     ...mapState('employees', [
       'list'
     ]),
+    ...mapState('patients', {
+      patientsList: 'list'
+    }),
     ...mapState('appointments', {
-      appointmentsList: 'list'
+      appointmentsList: 'list',
+      statusList: 'statusList'
     }),
     doctorOptions () {
       return this.list.map((o) => ({
         value: o.ID,
         label: `${o.FirstName} ${o.LastName}`
+      }))
+    },
+    patientsOptions () {
+      return this.patientsList.map((o) => ({
+        value: o.ID,
+        label: `${o.FirstName} ${o.LastName}`
+      }))
+    },
+    statusOptions () {
+      return this.statusList.map((o) => ({
+        value: o.ID,
+        label: o.Description
       }))
     },
     appointments () {
@@ -108,10 +127,14 @@ export default {
       'fetch',
       'remove',
       'add',
-      'edit'
+      'edit',
+      'fetchStatus'
     ]),
     ...mapActions('employees', {
       fetchDoctors: 'fetch'
+    }),
+    ...mapActions('patients', {
+      fetchPatients: 'fetch'
     }),
     showAddApp () {
       this.onAction({ action: 'openAdd' })
@@ -130,6 +153,14 @@ export default {
           break
         }
         case 'add': {
+          if (this.currentUser.is.patient) {
+            payload.item.Patient_ID = this.currentUser.credentials.id
+            payload.item.Status_ID = 2
+          }
+          if (this.currentUser.is.doctor) {
+            payload.item.Doctor_ID = Number(this.currentUser.credentials.id)
+            payload.item.Patient_ID = String(payload.item.Patient_ID)
+          }
           this.add({ item: payload.item }).then(() => {
             this.currentItem = {
               index: -1,
@@ -165,6 +196,8 @@ export default {
       this.$router.push({ name: 'dashboard' })
     }
     this.fetchDoctors()
+    this.fetchPatients()
+    this.fetchStatus()
     this.fetch()
   }
 }

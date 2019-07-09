@@ -86,6 +86,14 @@ export default {
         label: 'Doctor',
         error: 'Please select the doctor'
       },
+      status: {
+        label: 'Status',
+        error: 'Please select the status'
+      },
+      patient: {
+        label: 'Patient',
+        error: 'Please select the patient'
+      },
       startDate: {
         label: 'Date',
         error: 'Please select the date'

@@ -48,9 +48,32 @@
                   emit-value
                   map-options
                   :options="doctors"
+                  v-if="currentUser.is.patient"
                   :label="$t('appointments.fields.doctor.label')"
                   :error="$v.item.Doctor_ID.$error"
                   :error-message="$t('appointments.fields.doctor.error')"></q-select>
+                <q-select
+                  v-model="item.Patient_ID"
+                  class="full-width"
+                  required
+                  emit-value
+                  v-else
+                  map-options
+                  :options="patients"
+                  :label="$t('appointments.fields.patient.label')"
+                  :error="$v.item.Patient_ID.$error"
+                  :error-message="$t('appointments.fields.patient.error')"></q-select>
+                <q-select
+                  v-model="item.Status_ID"
+                  class="full-width"
+                  required
+                  emit-value
+                  v-if="currentUser.is.doctor"
+                  map-options
+                  :options="status"
+                  :label="$t('appointments.fields.status.label')"
+                  :error="$v.item.Status_ID.$error"
+                  :error-message="$t('appointments.fields.status.error')"></q-select>
                 <q-input :label="$t('appointments.fields.startDate.label')" filled v-model="item.StartDate"
                          :error="$v.item.StartDate.$error"
                          :error-message="$t('appointments.fields.startDate.error')">
@@ -103,6 +126,7 @@
 <script>
 import { clone } from 'quasar'
 import { required } from 'vuelidate/lib/validators'
+import CurrentUserMixin from '../../mixins/current-user'
 
 const icons = {
   add: 'add',
@@ -116,23 +140,48 @@ export default {
   props: {
     value: Object,
     locked: Boolean,
-    doctors: Array
+    doctors: Array,
+    patients: Array,
+    status: Array
   },
+  mixins: [
+    CurrentUserMixin
+  ],
   data () {
     return {
       item: clone(this.value.item)
     }
   },
-  validations: {
-    item: {
-      Description: {
-        required
-      },
-      Doctor_ID: {
-        required
-      },
-      StartDate: {
-        required
+  validations () {
+    if (this.currentUser.is.patient) {
+      return {
+        item: {
+          Description: {
+            required
+          },
+          Doctor_ID: {
+            required
+          },
+          StartDate: {
+            required
+          }
+        }
+      }
+    }
+    return {
+      item: {
+        Description: {
+          required
+        },
+        Patient_ID: {
+          required
+        },
+        StartDate: {
+          required
+        },
+        Status_ID: {
+          required
+        }
       }
     }
   },

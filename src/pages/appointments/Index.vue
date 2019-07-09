@@ -8,7 +8,7 @@
           required
           emit-value
           map-options
-          :options="doctorOptions"
+          :options="doctorOptionsView"
           :label="$t('appointments.selectedDoctor')"
           >
         </q-select>
@@ -17,7 +17,7 @@
     <q-page class="flex flex-center">
       <kalendar class="full-width" :configuration="calendar_settings" :appointments="appointments">
         <div slot="details-card" slot-scope="{appointment_props}" >
-          <div class="appointment-title" @click="onAction({ action: 'openEdit', id: appointment_props.data.id })">{{appointment_props.data.title}}</div>
+          <div class="appointment-title" @click="onAction({ action: 'openEdit', id: appointment_props.data.id })" :style="currentUser.is.doctor ? 'cursor: pointer' : ''">{{appointment_props.data.title}}</div>
           <small v-show="(appointment_props.end - appointment_props.start) > 2">{{appointment_props.data.description}}</small>
         </div>
       </kalendar>
@@ -32,7 +32,7 @@
       </q-page-sticky>
       <add-appointment ref="addAppointment" v-if="currentItem.item && (currentUser.is.patient || currentUser.is.doctor)"
                        :value="currentItem" :locked="currentItem.locked" @action="onAction" :doctors="doctorOptions"
-                       :status="statusOptions" :patients="patientsOptions"
+                       :status="statusOptions" :patients="patientsOptions" :treatments="treatmentsOptions"
       ></add-appointment>
     </q-page>
   </div>
@@ -43,7 +43,7 @@
 
 <script>
 import { date } from 'quasar'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import { Kalendar } from 'kalendar-vue'
 import 'kalendar-vue/dist/KalendarVue.css'
 import CurrentUserMixin from '../../mixins/current-user'
@@ -64,7 +64,7 @@ export default {
         opened: false,
         locked: false
       },
-      selectedDoctor: null,
+      selectedDoctor: 0,
       calendar_settings: {
         style: 'material_design', // ['flat_design', 'material_design']
         view_type: 'Day', // ['Month', 'Day']
@@ -77,6 +77,11 @@ export default {
       }
     }
   },
+  watch: {
+    selectedDoctor () {
+      this.setDoctor({ doctorId: this.selectedDoctor })
+    }
+  },
   computed: {
     ...mapState('employees', [
       'list'
@@ -86,13 +91,26 @@ export default {
     }),
     ...mapState('appointments', {
       appointmentsList: 'list',
-      statusList: 'statusList'
+      statusList: 'statusList',
+      doctorId: 'doctor'
     }),
+    ...mapState('treatments', {
+      treatmentsList: 'list'
+    }),
+    ...mapMutations('appointments', [
+      'SET_DOCTOR'
+    ]),
     doctorOptions () {
       return this.list.map((o) => ({
         value: o.ID,
         label: `${o.FirstName} ${o.LastName}`
       }))
+    },
+    doctorOptionsView () {
+      return [{ value: 0, label: 'All' }, ...this.list.map((o) => ({
+        value: o.ID,
+        label: `${o.FirstName} ${o.LastName}`
+      }))]
     },
     patientsOptions () {
       return this.patientsList.map((o) => ({
@@ -106,6 +124,12 @@ export default {
         label: o.Description
       }))
     },
+    treatmentsOptions () {
+      return this.treatmentsList.map((o) => ({
+        value: o.ID,
+        label: o.Name
+      }))
+    },
     appointments () {
       return this.appointmentsList.map((o) => {
         if (this.currentUser.is.patient) {
@@ -115,7 +139,7 @@ export default {
             date: date.formatDate(new Date(o.EndDate), 'YYYY-MM-DD'),
             data: {
               title: this.currentUser.credentials.id === o.Patient.User.ID ? `Your appointment` : 'Existing Appointment',
-              id: o.Id
+              id: o.ID
             }
           }
         } else if (this.currentUser.is.doctor) {
@@ -124,7 +148,8 @@ export default {
             to: new Date(o.EndDate),
             date: date.formatDate(new Date(o.EndDate), 'YYYY-MM-DD'),
             data: {
-              title: `Appointment with ${o.Patient.User.FirstName} ${o.Patient.User.LastName}`
+              title: `Appointment with ${o.Patient.User.FirstName} ${o.Patient.User.LastName}`,
+              id: o.ID
             }
           }
         }
@@ -140,13 +165,18 @@ export default {
       'remove',
       'add',
       'edit',
-      'fetchStatus'
+      'fetchStatus',
+      'getItem',
+      'setDoctor'
     ]),
     ...mapActions('employees', {
       fetchDoctors: 'fetch'
     }),
     ...mapActions('patients', {
       fetchPatients: 'fetch'
+    }),
+    ...mapActions('treatments', {
+      fetchTreatments: 'fetch'
     }),
     showAddApp () {
       this.onAction({ action: 'openAdd' })
@@ -195,14 +225,40 @@ export default {
         }
         case 'openEdit': {
           if (this.currentUser.is.doctor) {
+            this.getItem({ id: payload.id }).then(({ item }) => {
+              if (item) {
+                const actions = []
+                actions.push('cancel')
+                actions.push('update')
+                item.StartDate = date.formatDate(new Date(item.StartDate), 'YYYY-MM-DD HH:mm')
+                console.log(item.StartDate)
+                this.currentItem = {
+                  index: 0,
+                  item,
+                  opened: true,
+                  locked: false,
+                  actions
+                }
+              }
+            })
+          }
+          break
+        }
+        case 'update': {
+          payload.item.Patient_ID = payload.item.Patient_ID.toString()
+          this.edit({ item: payload.item }).then(() => {
             this.currentItem = {
               index: -1,
               item: {},
-              opened: true,
+              opened: false,
               locked: false,
               actions: ['cancel', 'add']
             }
-          }
+            this.$router.replace({ name: this.$route.name })
+          })
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+            })
           break
         }
         case 'cancel': {
@@ -224,6 +280,8 @@ export default {
     if (!this.currentUser.canSee[this.$route.name]) {
       this.$router.push({ name: 'dashboard' })
     }
+    this.selectedDoctor = this.doctorId
+    this.fetchTreatments()
     this.fetchDoctors()
     this.fetchPatients()
     this.fetchStatus()

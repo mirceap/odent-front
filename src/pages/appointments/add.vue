@@ -64,6 +64,16 @@
                   :error="$v.item.Patient_ID.$error"
                   :error-message="$t('appointments.fields.patient.error')"></q-select>
                 <q-select
+                  v-model="item.Treatment_ID"
+                  class="full-width"
+                  required
+                  emit-value
+                  map-options
+                  :options="treatments"
+                  :label="$t('appointments.fields.treatment.label')"
+                  :error="$v.item.Treatment_ID.$error"
+                  :error-message="$t('appointments.fields.treatment.error')"></q-select>
+                <q-select
                   v-model="item.Status_ID"
                   class="full-width"
                   required
@@ -142,7 +152,8 @@ export default {
     locked: Boolean,
     doctors: Array,
     patients: Array,
-    status: Array
+    status: Array,
+    treatments: Array
   },
   mixins: [
     CurrentUserMixin
@@ -164,6 +175,9 @@ export default {
           },
           StartDate: {
             required
+          },
+          Treatment_ID: {
+            required
           }
         }
       }
@@ -180,6 +194,9 @@ export default {
           required
         },
         Status_ID: {
+          required
+        },
+        Treatment_ID: {
           required
         }
       }

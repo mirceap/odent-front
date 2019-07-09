@@ -3,8 +3,9 @@ import { clone, date } from 'quasar'
 
 export const fetch = ({ commit, state }) => {
   commit('SET_LOADING', true)
+  const params = state.doctor ? { Doctor_ID: state.doctor } : {}
   return http
-    .get('appointments')
+    .get('appointments', { params })
     .then((response) => {
       const list = response.data
       commit('SET_LIST', list)
@@ -65,6 +66,7 @@ export const add = ({ dispatch, commit }, { item }) => {
 
 export const edit = ({ dispatch, commit }, { item }) => {
   commit('SET_LOADING', true)
+  item.EndDate = date.formatDate((new Date(item.StartDate).getTime() + 3600000), 'YYYY-MM-DD HH:mm')
   return http
     .put(`/appointments/${encodeURIComponent(item.ID)}`, item)
     .then(() => dispatch('fetch'))
@@ -88,4 +90,9 @@ export const fetchStatus = ({ commit }) => {
       commit('SET_LOADING', false)
       return Promise.reject(rejection)
     })
+}
+
+export const setDoctor = ({ dispatch, commit }, { doctorId }) => {
+  commit('SET_DOCTOR', doctorId)
+  dispatch('fetch')
 }

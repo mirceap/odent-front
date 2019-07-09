@@ -1,5 +1,6 @@
 export default {
   list: [],
   loading: false,
-  statusList: []
+  statusList: [],
+  doctor: 0
 }

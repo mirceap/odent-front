@@ -9,3 +9,7 @@ export const SET_STATUS_LIST = (state, list) => {
 export const SET_LOADING = (state, flag) => {
   state.loading = flag
 }
+
+export const SET_DOCTOR = (state, doctorId) => {
+  state.doctor = doctorId
+}

@@ -94,6 +94,10 @@ export default {
         label: 'Patient',
         error: 'Please select the patient'
       },
+      treatment: {
+        label: 'Treatment',
+        error: 'Please select the treatment'
+      },
       startDate: {
         label: 'Date',
         error: 'Please select the date'

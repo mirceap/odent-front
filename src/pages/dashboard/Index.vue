@@ -84,7 +84,7 @@
         </tr>
         </thead>
         <tbody>
-          <patient-item-row v-for="item in list" :key="item.appointment.ID" :item="item"></patient-item-row>
+          <patient-item-row v-for="item in list" :key="item.ID" :item="item"></patient-item-row>
         </tbody>
       </q-markup-table>
       <div class="q-px-lg q-pb-md">
@@ -93,13 +93,13 @@
             Previous Appointments
           </q-timeline-entry>
 
-          <patient-entry v-for="item in oldListEntry" :key="item.appointment.ID" :item="item" color="orange"></patient-entry>
+          <patient-entry v-for="item in oldListEntry" :key="item.ID" :item="item" color="orange"></patient-entry>
 
           <q-timeline-entry heading>
             Upcoming Appointments
           </q-timeline-entry>
 
-          <patient-entry v-for="item in newListEntry" :key="item.appointment.ID" :item="item" color="blue"></patient-entry>
+          <patient-entry v-for="item in newListEntry" :key="item.ID" :item="item" color="blue"></patient-entry>
         </q-timeline>
       </div>
     </template>
@@ -210,10 +210,10 @@ export default {
       'list'
     ]),
     newListEntry () {
-      return this.list.filter((o) => new Date(o.appointment.StartDate) > new Date())
+      return this.list.filter((o) => new Date(o.StartDate) > new Date())
     },
     oldListEntry () {
-      return this.list.filter((o) => new Date(o.appointment.StartDate) < new Date())
+      return this.list.filter((o) => new Date(o.StartDate) < new Date())
     }
   },
   methods: {

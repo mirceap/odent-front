@@ -4,17 +4,17 @@
       {{ itemDate }}
     </td>
     <td class="text-left">
-      {{ item.treatments.name }}
+      {{ treatment }}
     </td>
     <td class="text-left">
-      {{ `${ item.employees.firstName } ${ item.employees.lastName }` }}
+      {{ `${employee}` }}
     </td>
     <td class="text-left">
-      {{ item.appointment.Description }}
+      {{ item.Description }}
     </td>
     <td class="text-center">
       <q-rating
-        :value="item.appointment.DoctorRating || 0"
+        :value="item.DoctorRating || 0"
         size="2em"
         readonly
         color="blue-5"
@@ -33,7 +33,15 @@ export default {
   },
   computed: {
     itemDate () {
-      return date.formatDate(new Date(this.item.appointment.StartDate), 'YYYY-MM-DD HH:mm')
+      return date.formatDate(new Date(this.item.StartDate), 'YYYY-MM-DD HH:mm')
+    },
+    treatment () {
+      return (this.item && this.item.Treatments && this.item.Treatments.length && this.item.Treatments[0].Treatment &&
+        this.item.Treatments[0].Treatment.Name) ? this.item.Treatments[0].Treatment.Name : 'Unspecified treatment'
+    },
+    employee () {
+      return (this.item && this.item.Employees && this.item.Employees.length && this.item.Employees[0].Employee &&
+        this.item.Employees[0].Employee.User.FirstName && this.item.Employees[0].Employee.User.LastName) ? `${this.item.Employees[0].Employee.User.FirstName} ${this.item.Employees[0].Employee.User.LastName}` : 'Unspecified Doctor'
     }
   }
 }

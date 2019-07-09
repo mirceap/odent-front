@@ -67,7 +67,7 @@ export default {
       selectedDoctor: null,
       calendar_settings: {
         style: 'material_design', // ['flat_design', 'material_design']
-        view_type: 'Month', // ['Month', 'Day']
+        view_type: 'Day', // ['Month', 'Day']
         split_value: 20, // Value % 60 === 0
         cell_height: 10, // !isNaN(Value)
         scrollToNow: false, // Boolean
@@ -181,10 +181,15 @@ export default {
               locked: false,
               actions: ['cancel', 'add']
             }
+            this.$q.notify({
+              type: 'positive',
+              message: this.$t('success'),
+              position: 'bottom-right'
+            })
             this.$router.replace({ name: this.$route.name })
           })
             .catch((rejection) => {
-              showRejectionMessage(rejection, 'generic.actions.delete_notifications.fail')
+              showRejectionMessage(rejection, 'generic.fail')
             })
           break
         }

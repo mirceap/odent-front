@@ -1,11 +1,11 @@
 <template>
   <q-timeline-entry
-    :title="`${ item.treatments.name } - Appointment with ${ item.employees.firstName } ${ item.employees.lastName }`"
+    :title="`${ treatment } - Appointment with ${ employee }`"
     :subtitle="itemDate"
     :color="color"
   >
     <div>
-      {{ item.appointment.Description }}
+      {{ item.Description }}
     </div>
   </q-timeline-entry>
 </template>
@@ -21,7 +21,15 @@ export default {
   },
   computed: {
     itemDate () {
-      return date.formatDate(new Date(this.item.appointment.StartDate), 'YYYY-MM-DD HH:mm')
+      return date.formatDate(new Date(this.item.StartDate), 'YYYY-MM-DD HH:mm')
+    },
+    treatment () {
+      return (this.item && this.item.Treatments && this.item.Treatments.length && this.item.Treatments[0].Treatment &&
+        this.item.Treatments[0].Treatment.Name) ? this.item.Treatments[0].Treatment.Name : 'Unspecified treatment'
+    },
+    employee () {
+      return (this.item && this.item.Employees && this.item.Employees.length && this.item.Employees[0].Employee &&
+        this.item.Employees[0].Employee.User.FirstName && this.item.Employees[0].Employee.User.LastName) ? `${this.item.Employees[0].Employee.User.FirstName} ${this.item.Employees[0].Employee.User.LastName}` : 'Unspecified Doctor'
     }
   }
 }

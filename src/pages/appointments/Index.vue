@@ -197,7 +197,7 @@ export default {
         case 'add': {
           if (this.currentUser.is.patient) {
             payload.item.Patient_ID = this.currentUser.credentials.id
-            payload.item.Status_ID = 2
+            payload.item.Status_ID = 6
           }
           if (this.currentUser.is.doctor) {
             payload.item.Doctor_ID = this.currentUser.credentials.id

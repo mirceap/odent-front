@@ -205,12 +205,22 @@ export default {
   watch: {
     'value.item': function valueItem (val) {
       this.item = clone(val)
+      if (this.item && this.item.Treatments && this.item.Treatments.length && this.item.Treatments[0].Treatment &&
+        this.item.Treatments[0].Treatment.ID) {
+        this.item.Treatment_ID = this.item.Treatments[0].Treatment.ID
+      }
     },
     'value.opened': function valueOpened (val) {
       if (val) {
         this.$v.item.$reset()
         this.$dirty = false
       }
+    }
+  },
+  mounted () {
+    if (this.item && this.item.Treatments && this.item.Treatments.length && this.item.Treatments[0].Treatment &&
+      this.item.Treatments[0].Treatment.ID) {
+      this.item.Treatment_ID = this.item.Treatments[0].Treatment.ID
     }
   },
   computed: {

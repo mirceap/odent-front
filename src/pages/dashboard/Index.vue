@@ -46,7 +46,7 @@
             <div class="text-h6">{{$t('Appointments')}}</div>
           </q-card-section>
           <GChart
-            type="LineChart"
+            type="BarChart"
             :data="chartData4"
             :options="chartOptions4"
             style="height:400px"
@@ -135,27 +135,12 @@ export default {
           subtitle: 'Doctor per day'
         }
       },
-      chartData2: [
-        ['', 'Doctor #1', 'Doctor #2', 'Doctor #3'],
-        ['February', 1000, 400, 200],
-        ['March', 1200, 500, 290],
-        ['May', 1300, 200, 210],
-        ['June', 1700, 300, 203],
-        ['July', 1100, 400, 202]
-      ],
       chartOptions2: {
         chart: {
           title: 'Money input',
           subtitle: 'Doctor per month'
         }
       },
-      chartData3: [
-        ['Status', 'Percentage'],
-        ['Show', 60],
-        ['No Show', 20],
-        ['Delayed', 10],
-        ['Cancelled', 10]
-      ],
       chartOptions3: {
         chart: {
           title: 'Statuses',
@@ -194,6 +179,18 @@ export default {
         []
       ]
     },
+    chartData2 () {
+      if (this.list && this.list.monthlyChart && this.currentUser.is.admin) {
+        return [
+          this.list.monthlyChart.doctors,
+          ...Object.keys(this.list.monthlyChart.yearlyData).map((k) => this.list.monthlyChart.yearlyData[k])
+        ]
+      }
+      return [
+        [],
+        []
+      ]
+    },
     chartData4 () {
       let array = [
         ['date', 'Appointments']
@@ -213,6 +210,17 @@ export default {
       if (this.list && this.list.appointmentsStats && this.currentUser.is.doctor) {
         return [
           ...this.list.appointmentsStats
+        ]
+      }
+      return [
+        [],
+        []
+      ]
+    },
+    chartData3 () {
+      if (this.list && this.list.appointmentStats && this.currentUser.is.admin) {
+        return [
+          ...this.list.appointmentStats
         ]
       }
       return [

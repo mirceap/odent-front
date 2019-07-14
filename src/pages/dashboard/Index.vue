@@ -163,35 +163,12 @@ export default {
           height: 500
         }
       },
-      chartData4: [
-        ['date', 'Appointments'],
-        [ new Date(2019, 6, 1), 3 ],
-        [ new Date(2019, 6, 2), 5 ],
-        [ new Date(2019, 6, 3), 5 ],
-        [ new Date(2019, 6, 4), 12 ],
-        [ new Date(2019, 6, 5), 14 ],
-        [ new Date(2019, 6, 6), 3 ],
-        [ new Date(2019, 6, 7), 5 ],
-        [ new Date(2019, 6, 8), 7 ],
-        [ new Date(2019, 6, 9), 8 ],
-        [ new Date(2019, 6, 10), 7 ],
-        [ new Date(2019, 6, 11), 9 ],
-        [ new Date(2019, 6, 12), 10 ],
-        [ new Date(2019, 6, 12), 12 ]
-      ],
       chartOptions4: {
         chart: {
           title: 'Number of appointments per day',
           height: 400
         }
       },
-      chartData5: [
-        ['Status', 'Percentage'],
-        ['Show', 60],
-        ['No Show', 20],
-        ['Delayed', 10],
-        ['Cancelled', 10]
-      ],
       chartOptions5: {
         chart: {
           title: 'Statuses',
@@ -210,6 +187,32 @@ export default {
         return [
           this.list.dailyChart.doctors,
           this.list.dailyChart.sums
+        ]
+      }
+      return [
+        [],
+        []
+      ]
+    },
+    chartData4 () {
+      let array = [
+        ['date', 'Appointments']
+      ]
+      if (this.list && this.list.appointmentsData && this.currentUser.is.doctor) {
+        return [
+          ...array,
+          ...this.list.appointmentsData
+        ]
+      }
+      return [
+        ...array,
+        []
+      ]
+    },
+    chartData5 () {
+      if (this.list && this.list.appointmentsStats && this.currentUser.is.doctor) {
+        return [
+          ...this.list.appointmentsStats
         ]
       }
       return [

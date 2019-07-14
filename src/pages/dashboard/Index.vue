@@ -84,7 +84,7 @@
         </tr>
         </thead>
         <tbody>
-          <patient-item-row v-for="item in list" :key="item.ID" :item="item"></patient-item-row>
+          <patient-item-row v-for="item in list" :key="item.ID" :item="item" @action="onAction"></patient-item-row>
         </tbody>
       </q-markup-table>
       <div class="q-px-lg q-pb-md">
@@ -232,7 +232,7 @@ export default {
       if (!this.currentUser.is.patient) {
         return []
       }
-      if (this.list) {
+      if (this.list && this.list.length) {
         return this.list.filter((o) => new Date(o.StartDate) > new Date())
       }
       return []
@@ -241,7 +241,7 @@ export default {
       if (!this.currentUser.is.patient) {
         return []
       }
-      if (this.list) {
+      if (this.list && this.list.length) {
         return this.list.filter((o) => new Date(o.StartDate) < new Date())
       }
       return []
@@ -250,7 +250,26 @@ export default {
   methods: {
     ...mapActions('dashboard', [
       'fetch'
-    ])
+    ]),
+    ...mapActions('appointments', [
+      'edit'
+    ]),
+    onAction (payload) {
+      const action = payload && payload.action ? payload.action : 'cancel'
+      switch (action) {
+        case 'editAppointment': {
+          this.edit({ item: { ID: payload.id, PatientRating: payload.rating } }).then(() =>
+            this.fetch()
+              .catch((rejection) => {
+                showRejectionMessage(rejection, 'generic.actions.fail')
+              }))
+            .catch((rejection) => {
+              showRejectionMessage(rejection, 'generic.actions.fail')
+            })
+          break
+        }
+      }
+    }
   },
   mounted () {
     if (!this.currentUser.canSee[this.$route.name]) {

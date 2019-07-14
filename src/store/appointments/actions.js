@@ -66,7 +66,9 @@ export const add = ({ dispatch, commit }, { item }) => {
 
 export const edit = ({ dispatch, commit }, { item }) => {
   commit('SET_LOADING', true)
-  item.EndDate = date.formatDate((new Date(item.StartDate).getTime() + 3600000), 'YYYY-MM-DD HH:mm')
+  if (item.StartDate) {
+    item.EndDate = date.formatDate((new Date(item.StartDate).getTime() + 3600000), 'YYYY-MM-DD HH:mm')
+  }
   return http
     .put(`/appointments/${encodeURIComponent(item.ID)}`, item)
     .then(() => dispatch('fetch'))

@@ -14,11 +14,11 @@
     </td>
     <td class="text-center">
       <q-rating
-        :value="item.DoctorRating || 0"
+        v-model="itemRating"
         size="2em"
-        readonly
-        color="blue-5"
-        icon="star_border"></q-rating>
+        :readonly="new Date() < new Date(itemDate)"
+        :color="new Date() < new Date(itemDate) ? 'green-5' : 'blue'"
+        :icon="new Date() < new Date(itemDate) ? 'star_border' : 'star'"></q-rating>
     </td>
   </tr>
 </template>
@@ -32,6 +32,18 @@ export default {
     item: Object
   },
   computed: {
+    itemRating: {
+      get: function () {
+        return this.item.PatientRating || 0
+      },
+      set: function (newValue) {
+        return this.$emit('action', {
+          action: 'editAppointment',
+          id: this.item.ID,
+          rating: newValue
+        })
+      }
+    },
     itemDate () {
       return date.formatDate(new Date(this.item.StartDate), 'YYYY-MM-DD HH:mm')
     },

@@ -85,3 +85,9 @@ export const login = ({ commit, dispatch, state }, credentials = {}) => http
   .catch((rejection) => {
     return Promise.reject(rejection)
   })
+
+export const changePassword = (_, password) => http
+  .post('/password', { Password: password })
+  .catch((rejection) => {
+    return Promise.reject(rejection)
+  })

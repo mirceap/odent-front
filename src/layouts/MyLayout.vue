@@ -35,6 +35,15 @@
                   <q-item-label>{{$t('auth.log_out')}}</q-item-label>
                 </q-item-section>
               </q-item>
+
+              <q-item clickable @click="openChangePass">
+                <q-item-section avatar>
+                  <q-avatar icon="vpn_key" color="white" text-color="black" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{$t('auth.change_pass')}}</q-item-label>
+                </q-item-section>
+              </q-item>
             </q-list>
           </q-btn-dropdown>
         </div>
@@ -101,11 +110,51 @@
     <q-page-container>
       <router-view></router-view>
     </q-page-container>
+
+    <q-dialog no-esc-dismiss no-backdrop-dismiss v-model="openModal">
+      <q-layout view="Lhh lpR fff" container class="bg-white" style="max-height: 20vh">
+        <q-header class="bg-black text-white">
+          <q-toolbar>
+          </q-toolbar>
+        </q-header>
+        <q-footer class="bg-black text-white">
+          <q-toolbar color="dark">
+            <q-space></q-space>
+            <q-btn class="on-right"
+                   color="red"
+                   :label="$t(`generic.actions.cancel`)"
+                   @click="closeModal()"></q-btn>
+            <q-btn class="on-right"
+                   color="primary"
+                   :label="$t(`generic.actions.savePass`)"
+                   @click="changePass()"
+                   :disabled="this.disableSave"
+            ></q-btn>
+          </q-toolbar>
+        </q-footer>
+
+        <q-page-container>
+          <q-page padding>
+            <form class="column" @submit.prevent>
+              <div class="layout-padding">
+                <q-input
+                  v-model="newPass"
+                  color="dark"
+                  required
+                  type="password"
+                  :label="$t('auth.newPass.label')"
+                  ></q-input>
+              </div>
+            </form>
+          </q-page>
+        </q-page-container>
+      </q-layout>
+    </q-dialog>
   </q-layout>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import currentUserMixin from '../mixins/current-user'
 import languageMixin from '../mixins/language'
 
@@ -117,13 +166,44 @@ export default {
   ],
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: this.$q.platform.is.desktop,
+      openModal: false,
+      newPass: '',
+      disableSave: true
+    }
+  },
+  watch: {
+    newPass () {
+      if (!(this.newPass === null || this.newPass === '')) {
+        this.disableSave = false
+      }
     }
   },
   methods: {
     ...mapMutations('auth', [
       'CLEAR_CREDENTIALS'
-    ])
+    ]),
+    ...mapActions('auth', [
+      'changePassword'
+    ]),
+    openChangePass () {
+      this.openModal = true
+    },
+    changePass () {
+      this.changePassword(this.newPass).then(() => {
+        this.$q.notify({
+          type: 'positive',
+          message: this.$t('generic.actions.success'),
+          position: 'bottom-right'
+        })
+        this.newPass = ''
+        this.disableSave = false
+        this.openModal = false
+      })
+    },
+    closeModal () {
+      this.openModal = false
+    }
   }
 }
 </script>

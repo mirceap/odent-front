@@ -5,12 +5,17 @@ export default {
   failed: 'Action failed',
   success: 'Action was successful',
   auth: {
+    newPass: {
+      label: 'New Password',
+      error: 'Field mandatory'
+    },
     sign_in_title: 'Sign in',
     sign_in_error: '',
     log_in_admin: 'Log In as Admin',
     log_in_doctor: 'Log In as Doctor',
     log_in_pacient: 'Log In as Patient',
     log_out: 'Log Out',
+    change_pass: 'Change Password',
     log_in: 'Log in',
     fields: {
       user: {
@@ -62,8 +67,10 @@ export default {
     add: 'Add',
     actions: {
       add: 'Add',
+      savePass: 'Change password',
       cancel: 'Cancel',
       update: 'Update',
+      success: 'Request successful',
       fail: 'Request failed',
       confirm_cancel_cancel: 'Cancel',
       confirm_cancel_ok: 'Ok',

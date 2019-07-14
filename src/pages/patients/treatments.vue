@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog no-esc-dismiss no-backdrop-dismiss v-model="value">
-      <q-layout view="Lhh lpR fff" container class="bg-white" style="max-height: 60vh; min-width: 50vw">
+      <q-layout view="Lhh lpR fff" container class="bg-white" style="max-height: 60vh; min-width: 80vw">
         <q-header class="bg-black text-white">
           <q-toolbar>
           </q-toolbar>
@@ -29,76 +29,20 @@
               </tr>
               </thead>
               <tbody>
-                <tr class="bg-grey-1">
+                <tr class="bg-grey-1" v-for="item in listByPacient" :key="item.ID">
                   <td class="text-left">
-                    2019-06-23
+                    {{ item.Date }}
                   </td>
                   <td class="text-left">
-                    Usual check-up
+                    {{ item.Treatments && item.Treatments[0] && item.Treatments[0].Treatment && item.Treatments[0].Treatment.Name ?
+                      item.Treatments[0].Treatment.Name : 'Unspecified treatment'}}
                   </td>
                   <td class="text-left">
-                    All good
+                    {{ item.Description }}
                   </td>
                   <td class="text-center">
                     <q-rating
-                      value="1"
-                      size="2em"
-                      readonly
-                      color="blue-5"
-                      icon="star_border"></q-rating>
-                  </td>
-                </tr>
-                <tr class="bg-grey-1">
-                  <td class="text-left">
-                    2019-06-22
-                  </td>
-                  <td class="text-left">
-                    Blood analysis
-                  </td>
-                  <td class="text-left">
-                    All good too
-                  </td>
-                  <td class="text-center">
-                    <q-rating
-                      value="5"
-                      size="2em"
-                      readonly
-                      color="blue-5"
-                      icon="star_border"></q-rating>
-                  </td>
-                </tr>
-                <tr class="bg-grey-1">
-                  <td class="text-left">
-                    2019-06-22
-                  </td>
-                  <td class="text-left">
-                    Usual check-up
-                  </td>
-                  <td class="text-left">
-                    All good
-                  </td>
-                  <td class="text-center">
-                    <q-rating
-                      value="2"
-                      size="2em"
-                      readonly
-                      color="blue-5"
-                      icon="star_border"></q-rating>
-                  </td>
-                </tr>
-                <tr class="bg-grey-1">
-                  <td class="text-left">
-                    2019-06-21
-                  </td>
-                  <td class="text-left">
-                    Blood analysis
-                  </td>
-                  <td class="text-left">
-                    All good too
-                  </td>
-                  <td class="text-center">
-                    <q-rating
-                      value="3"
+                      :value="item.PatientRating || 0"
                       size="2em"
                       readonly
                       color="blue-5"
@@ -116,11 +60,13 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'PatientsTreatments',
   props: {
-    value: Boolean
+    value: Boolean,
+    patientId: Number
   },
   data () {
     return {
@@ -129,8 +75,20 @@ export default {
   watch: {
   },
   computed: {
+    ...mapState('treatments', [
+      'listByPacient'
+    ])
+  },
+  mounted () {
+    this.fetchByPatient({ id: this.patientId })
   },
   methods: {
+    ...mapActions('treatments', [
+      'fetchByPatient'
+    ]),
+    ...mapMutations('treatments', [
+      'CLEAR_LIST_BY_PATIENTS'
+    ]),
     doAction (action = 'dismissTreatment') {
       if (action === 'dismissTreatment') {
         return this.$emit('action', {
@@ -143,6 +101,7 @@ export default {
     if (this.dialogResolver) {
       this.dialogResolver.reject()
     }
+    this.CLEAR_LIST_BY_PATIENTS()
   }
 }
 </script>

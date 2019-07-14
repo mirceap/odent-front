@@ -17,6 +17,22 @@ export const fetch = ({ commit, state }) => {
     })
 }
 
+export const fetchByPatient = ({ commit, state }, { id }) => {
+  commit('SET_LOADING', true)
+  return http
+    .get('treatments', { params: { PatientID: id } })
+    .then((response) => {
+      const list = response.data
+      commit('SET_LIST_BY_PATIENT', list)
+      commit('SET_LOADING', false)
+      return list
+    })
+    .catch((rejection) => {
+      commit('SET_LOADING', false)
+      return Promise.reject(rejection)
+    })
+}
+
 export const remove = ({ dispatch, commit }, { id }) => {
   commit('SET_LOADING', true)
   return http.delete(`/treatments/${encodeURIComponent(id)}`)

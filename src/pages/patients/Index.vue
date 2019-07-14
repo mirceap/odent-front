@@ -30,7 +30,7 @@
       <q-spinner-gears size="50px" color="primary" />
     </q-inner-loading>
     <patients-details ref="patientsDetails" v-if="currentItem.item" :value="currentItem" :locked="currentItem.locked" @action="onAction" :usage="usage"></patients-details>
-    <patients-treatments ref="patientsTreatments" v-if="viewTreatments" :value="viewTreatments" @action="onAction"></patients-treatments>
+    <patients-treatments ref="patientsTreatments" v-if="viewTreatments" :value="viewTreatments" :patientId="patientId" @action="onAction"></patients-treatments>
   </q-page>
 </template>
 
@@ -63,6 +63,7 @@ export default {
         opened: false,
         locked: false
       },
+      patientId: 0,
       viewTreatments: false
     }
   },
@@ -149,6 +150,7 @@ export default {
         }
         case 'openTreatment': {
           this.viewTreatments = true
+          this.patientId = payload.id
           break
         }
         case 'add': {

@@ -42,7 +42,7 @@
 </style>
 
 <script>
-import { date } from 'quasar'
+import { clone, date } from 'quasar'
 import { mapActions, mapState, mapMutations } from 'vuex'
 import { Kalendar } from 'kalendar-vue'
 import 'kalendar-vue/dist/KalendarVue.css'
@@ -138,7 +138,7 @@ export default {
             to: new Date(o.EndDate),
             date: date.formatDate(new Date(o.EndDate), 'YYYY-MM-DD'),
             data: {
-              title: this.currentUser.credentials.id === o.Patient.User.ID ? `Your appointment` : 'Existing Appointment',
+              title: this.currentUser.credentials.id === o.Patient_ID ? `Your appointment` : 'Existing Appointment',
               id: o.ID
             }
           }
@@ -279,12 +279,18 @@ export default {
     if (!this.currentUser.canSee[this.$route.name]) {
       this.$router.push({ name: 'dashboard' })
     }
-    this.selectedDoctor = this.doctorId
-    this.fetchTreatments()
-    this.fetchDoctors()
-    this.fetchPatients()
-    this.fetchStatus()
-    this.fetch()
+    if (this.currentUser.is.patient) {
+      console.log(1)
+      this.selectedDoctor = clone(this.doctorId)
+    } else if (this.currentUser.is.doctor || this.currentUser.is.admin) {
+      this.selectedDoctor = 0
+      this.setDoctor({ doctorId: this.selectedDoctor })
+    }
+    this.fetchTreatments().then(() =>
+      this.fetchDoctors().then(() =>
+        this.fetchPatients().then(() =>
+          this.fetchStatus().then(() =>
+            this.fetch()))))
   }
 }
 </script>
